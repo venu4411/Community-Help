@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-registration',
@@ -22,32 +23,26 @@ export class RegistrationComponent {
   };
 
   isRegistered = false;
+  errorMessage = '';
 
-  constructor(private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   registerUser(): void {
-    if (
-      this.user.fullName &&
-      this.user.contact &&
-      this.user.username &&
-      this.user.password &&
-      this.user.location
-    ) {
-      this.isRegistered = true;
-
-      // reset form
-      this.user = {
-        fullName: '',
-        contact: '',
-        username: '',
-        password: '',
-        location: '',
-        role: 'Resident'
-      };
-    }
+    this.authService.registerUser(this.user).subscribe({
+      next: () => {
+        this.isRegistered = true;
+      },
+      error: (err: any) => {
+        this.errorMessage = err?.error?.message || 'Registration failed';
+      }
+    });
   }
 
+
   goToHome(): void {
-    this.router.navigate(['/']); // ✅ Landing page
+    this.router.navigate(['/']);
   }
 }

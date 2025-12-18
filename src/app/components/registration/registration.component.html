@@ -1,67 +1,66 @@
 <div class="registration-page">
 
-  <!-- REGISTRATION FORM -->
+  <!-- FORM -->
   <div class="glass-card" *ngIf="!isRegistered">
-
     <h3 class="text-center mb-4">User Registration</h3>
 
     <form (ngSubmit)="registerUser()" #regForm="ngForm">
 
-      <div class="form-group">
-        <label>Full Name</label>
-        <input type="text" class="form-control"
-          required [(ngModel)]="user.fullName" name="fullName">
-      </div>
+      <input class="form-control mb-3"
+             placeholder="Full Name"
+             name="fullName"
+             [(ngModel)]="user.fullName"
+             required>
 
-      <div class="form-group">
-        <label>Contact</label>
-        <input type="text" class="form-control"
-          required [(ngModel)]="user.contact" name="contact">
-      </div>
+      <input class="form-control mb-3"
+             placeholder="Contact"
+             name="contact"
+             [(ngModel)]="user.contact"
+             required>
 
-      <div class="form-group">
-        <label>Username</label>
-        <input type="text" class="form-control"
-          required [(ngModel)]="user.username" name="username">
-      </div>
+      <input class="form-control mb-3"
+             placeholder="Username"
+             name="username"
+             [(ngModel)]="user.username"
+             required>
 
-      <div class="form-group">
-        <label>Password</label>
-        <input type="password" class="form-control"
-          required [(ngModel)]="user.password" name="password">
-      </div>
+      <input type="password"
+             class="form-control mb-3"
+             placeholder="Password"
+             name="password"
+             [(ngModel)]="user.password"
+             required>
 
-      <div class="form-group">
-        <label>Location</label>
-        <input type="text" class="form-control"
-          required [(ngModel)]="user.location" name="location">
-      </div>
+      <input class="form-control mb-3"
+             placeholder="Location"
+             name="location"
+             [(ngModel)]="user.location"
+             required>
 
-      <div class="form-group">
-        <label>Role</label>
-        <input type="text" class="form-control" value="Resident" disabled>
-      </div>
+      <input class="form-control mb-3" value="Resident" disabled>
 
-      <button class="btn btn-success w-100 mt-3"
+      <button
+        type="submit"
+        class="btn btn-success w-100"
         [disabled]="!regForm.valid">
         Register
       </button>
 
+      <p class="text-danger mt-2" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </p>
     </form>
   </div>
 
-  <!-- SUCCESS STATE -->
+  <!-- SUCCESS -->
   <div class="glass-card success-card" *ngIf="isRegistered">
-    <div class="success-icon">✅</div>
-    <h3>Successfully Registered</h3>
-    <p>Your account has been created successfully.</p>
+    <h3>✅ Successfully Registered</h3>
+    <p>Your account has been created.</p>
 
-<button
-  class="btn btn-outline-success mt-3"
-  (click)="goToHome()">
-  Go to Home
-</button>
-
+    <button class="btn btn-outline-success mt-3"
+            (click)="goToHome()">
+      Go to Home
+    </button>
   </div>
 
 </div>

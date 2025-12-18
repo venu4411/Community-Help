@@ -1,11 +1,14 @@
-<!-- NAVBAR -->
+<!-- ================= NAVBAR ================= -->
 <nav class="top-nav" [class.shrink]="isScrolled">
   <div class="nav-container">
 
+    <!-- LOGO -->
     <div class="nav-logo">
       <span class="logo-box"></span>
       <span class="logo-text">Community Help</span>
     </div>
+
+    <!-- SEARCH -->
     <div class="nav-search">
       <input
         type="text"
@@ -13,27 +16,47 @@
         placeholder="Search help, location..."
       />
     </div>
+
+    <!-- LINKS -->
     <ul class="nav-links d-none d-lg-flex">
       <li>
-        <a href="#benefits" [class.active]="activeSection === 'benefits'">
-          Benefits
-        </a>
-      </li>
-      <li>
-        <a href="#trust" [class.active]="activeSection === 'trust'">
-          Why Us
-        </a>
+        <a href="#benefits">Benefits</a>
       </li>
     </ul>
 
-    <a routerLink="/register" class="btn btn-contact d-none d-lg-inline">
+    <!-- CONTACT (BEFORE LOGIN ONLY) -->
+    <a
+      *ngIf="!authService.isLoggedIn()"
+      routerLink="/register"
+      class="btn btn-contact d-none d-lg-inline">
       Contact
     </a>
-    <a routerLink="/login" class="btn btn-outline-success">
+
+    <!-- LOGIN (BEFORE LOGIN) -->
+    <button
+      *ngIf="!authService.isLoggedIn()"
+      class="btn btn-outline-light"
+      (click)="goToLogin()">
       Login
-    </a>
+    </button>
 
+    <!-- PROFILE (AFTER LOGIN) -->
+    <button
+      *ngIf="authService.isLoggedIn()"
+      class="btn btn-outline-light"
+      (click)="goToProfile()">
+      Profile
+    </button>
 
+    <!-- LOGOUT (AFTER LOGIN) -->
+    <button
+      *ngIf="authService.isLoggedIn()"
+      class="btn btn-outline-danger ms-2"
+      (click)="logout()">
+      Logout
+    </button>
+
+    <!-- MOBILE MENU -->
     <button class="hamburger d-lg-none" (click)="toggleMobileMenu()">
       ☰
     </button>
@@ -42,38 +65,73 @@
   <!-- MOBILE DRAWER -->
   <div class="mobile-drawer" [class.open]="mobileMenuOpen">
     <a href="#benefits" (click)="toggleMobileMenu()">Benefits</a>
-    <a href="#trust" (click)="toggleMobileMenu()">Why Us</a>
-    <a routerLink="/register" class="btn btn-success mt-3">
+
+    <a
+      *ngIf="!authService.isLoggedIn()"
+      routerLink="/register"
+      class="btn btn-success mt-3">
       Contact
     </a>
+
+    <button
+      *ngIf="!authService.isLoggedIn()"
+      class="btn btn-outline-light mt-3"
+      (click)="goToLogin()">
+      Login
+    </button>
+
+    <button
+      *ngIf="authService.isLoggedIn()"
+      class="btn btn-outline-light mt-3"
+      (click)="goToProfile()">
+      Profile
+    </button>
+
+    <button
+      *ngIf="authService.isLoggedIn()"
+      class="btn btn-outline-danger mt-2"
+      (click)="logout()">
+      Logout
+    </button>
   </div>
 </nav>
 
-<!-- HERO (NO reveal here) -->
+<!-- ================= HERO ================= -->
 <section class="hero text-center text-white">
   <div class="container">
+
     <h1 class="fw-bold display-5 mb-3">
-      Community Help, Built for Neighborhoods
+      Welcome to Community Help
     </h1>
-    <p class="lead text-muted mb-4">
-      Request help, offer support, and build stronger local communities —
-      all in one place.
-    </p>
 
-    <div class="d-flex justify-content-center gap-3">
-      <a routerLink="/register" class="btn btn-success btn-lg">
-        Get Started
-      </a>
-      <a routerLink="/helper-registration" class="btn btn-outline-light btn-lg">
-        Join as Helper
-      </a>
+    <!-- BEFORE LOGIN -->
+    <div *ngIf="!authService.isLoggedIn()">
+      <p class="lead mb-4">
+        Connect with neighbors and helpers around you
+      </p>
 
+      <div class="d-flex justify-content-center gap-3">
+        <a routerLink="/register" class="btn btn-success btn-lg">
+          Get Started
+        </a>
 
+        <a routerLink="/helper-registration" class="btn btn-outline-light btn-lg">
+          Join as Helper
+        </a>
+      </div>
     </div>
+
+    <!-- AFTER LOGIN -->
+    <div *ngIf="authService.isLoggedIn()">
+      <p class="lead mb-4">
+        We’re glad to have you back 👋
+      </p>
+    </div>
+
   </div>
 </section>
 
-<!-- BENEFITS -->
+<!-- ================= BENEFITS ================= -->
 <section id="benefits" class="benefits reveal">
   <div class="container">
     <h2 class="text-center mb-5">Why People Love It</h2>
@@ -88,7 +146,8 @@
     </div>
   </div>
 </section>
-<!-- POPULAR HELPERS -->
+
+<!-- ================= POPULAR HELPERS ================= -->
 <section class="helpers-section reveal">
   <div class="container text-center">
 
@@ -101,7 +160,6 @@
       <div class="col-md-4" *ngFor="let helper of popularHelpers">
         <div class="helper-card">
 
-          <!-- PROFILE IMAGE -->
           <div class="helper-img-wrapper">
             <img
               [src]="helper.image"
@@ -120,8 +178,8 @@
   </div>
 </section>
 
-<!-- TRUST -->
-<section id="trust" class="trust text-center reveal">
+<!-- ================= TRUST ================= -->
+<section class="trust text-center reveal">
   <div class="container">
     <h2 class="mb-4">Trusted by Communities</h2>
 
@@ -154,6 +212,7 @@
   </div>
 </section>
 
+<!-- ================= FOOTER ================= -->
 <footer class="footer text-center">
   © 2025 Neighborhood Community Help Portal
 </footer>

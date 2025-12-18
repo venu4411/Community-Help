@@ -1,3 +1,6 @@
+
+
+
 html {
   scroll-behavior: smooth;
 }
@@ -16,6 +19,7 @@ html {
 .top-nav.shrink {
   top: 10px;
 }
+
 
 .nav-container {
   background: rgba(15, 15, 15, 0.92);

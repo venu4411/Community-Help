@@ -1,0 +1,19 @@
+<div class="glass-card">
+
+  <h3>User Details</h3>
+
+  <p><strong>Name:</strong> {{ user.fullName }}</p>
+  <p><strong>Contact:</strong> {{ user.contact }}</p>
+  <p><strong>Role:</strong> {{ user.role }}</p>
+
+  <!-- Resident -->
+  <p *ngIf="user.role === 'Resident'">
+    <strong>Location:</strong> {{ user.location }}
+  </p>
+
+  <!-- Helper -->
+  <p *ngIf="user.role === 'Helper'">
+    <strong>Profession:</strong> {{ user.profession }}
+  </p>
+
+</div>
