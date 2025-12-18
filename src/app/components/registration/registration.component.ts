@@ -1,46 +1,53 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MockRoleService } from '../../services/mock-role.service';
 
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './registration.component.html'
+  imports: [CommonModule, FormsModule],
+  templateUrl: './registration.component.html',
+  styleUrls: ['./registration.component.css']
 })
 export class RegistrationComponent {
 
-  submitted = false;
-  form: FormGroup;
+  user = {
+    fullName: '',
+    contact: '',
+    username: '',
+    password: '',
+    location: '',
+    role: 'Resident'
+  };
 
-  constructor(
-    private fb: FormBuilder,
-    private router: Router,
-    private roleService: MockRoleService
-  ) {
-    this.form = this.fb.group({
-      name: ['', Validators.required],
-      contact: ['', Validators.required],
-      location: ['', Validators.required],
-      role: ['resident', Validators.required]
-    });
+  isRegistered = false;
+
+  constructor(private router: Router) {}
+
+  registerUser(): void {
+    if (
+      this.user.fullName &&
+      this.user.contact &&
+      this.user.username &&
+      this.user.password &&
+      this.user.location
+    ) {
+      this.isRegistered = true;
+
+      // reset form
+      this.user = {
+        fullName: '',
+        contact: '',
+        username: '',
+        password: '',
+        location: '',
+        role: 'Resident'
+      };
+    }
   }
 
-  submit(): void {
-    this.submitted = true;
-
-    if (this.form.invalid) {
-      return;
-    }
-
-    this.roleService.setRole(this.form.value.role);
-
-    if (this.form.value.role === 'resident') {
-      this.router.navigate(['/resident/dashboard']);
-    } else {
-      this.router.navigate(['/helper/dashboard']);
-    }
+  goToHome(): void {
+    this.router.navigate(['/']); // ✅ Landing page
   }
 }

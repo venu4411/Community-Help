@@ -6,7 +6,13 @@
       <span class="logo-box"></span>
       <span class="logo-text">Community Help</span>
     </div>
-
+    <div class="nav-search">
+      <input
+        type="text"
+        class="form-control search-input"
+        placeholder="Search help, location..."
+      />
+    </div>
     <ul class="nav-links d-none d-lg-flex">
       <li>
         <a href="#benefits" [class.active]="activeSection === 'benefits'">
@@ -23,6 +29,10 @@
     <a routerLink="/register" class="btn btn-contact d-none d-lg-inline">
       Contact
     </a>
+    <a routerLink="/login" class="btn btn-outline-success">
+      Login
+    </a>
+
 
     <button class="hamburger d-lg-none" (click)="toggleMobileMenu()">
       ☰
@@ -54,9 +64,11 @@
       <a routerLink="/register" class="btn btn-success btn-lg">
         Get Started
       </a>
-      <a routerLink="/register" class="btn btn-outline-light btn-lg">
+      <a routerLink="/helper-registration" class="btn btn-outline-light btn-lg">
         Join as Helper
       </a>
+
+
     </div>
   </div>
 </section>

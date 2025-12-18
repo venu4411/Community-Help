@@ -66,21 +66,27 @@ export class LandingComponent implements AfterViewInit {
     name: 'Arjun Rao',
     role: 'Electrician',
     rating: 4.8,
-    image: 'https://i.pravatar.cc/150?img=32'
+    image: 'https://t3.ftcdn.net/jpg/04/64/91/64/360_F_464916429_9m2n531ScCfdAIpgAw5YOU3VFVbHOkSf.jpg'
   },
   {
     name: 'Sneha Patel',
     role: 'Home Tutor',
     rating: 4.9,
-    image: 'https://i.pravatar.cc/150?img=12'
+    image: 'https://img.freepik.com/free-photo/woman-holding-pile-clean-clothes_23-2149117036.jpg?semt=ais_hybrid&w=740&q=80'
   },
   {
     name: 'Mohammed Irfan',
     role: 'Plumber',
     rating: 4.7,
-    image: 'https://i.pravatar.cc/150?img=48'
+    image: 'https://d17x34b9fcvxk7.cloudfront.net/static/marketing/images/hero-backgrounds/plumber.jpg'
   }
 ];
+searchOpen = false;
+
+toggleSearch(): void {
+  this.searchOpen = !this.searchOpen;
+}
+
 
 
 }

@@ -3,16 +3,23 @@ import { LandingComponent } from './components/landing/landing.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 
 export const routes: Routes = [
+  { path: '', component: LandingComponent },
+
+  { path: 'register', component: RegistrationComponent },
+
   {
-    path: '',
-    component: LandingComponent
+    path: 'helper-registration',
+    loadComponent: () =>
+      import('./components/helper-registration/helper-registration.component')
+        .then(m => m.HelperRegistrationComponent)
   },
+
   {
-    path: 'register',
-    component: RegistrationComponent
+    path: 'login',
+    loadComponent: () =>
+      import('./components/login/login.component')
+        .then(m => m.LoginComponent)
   },
-  {
-    path: '**',
-    redirectTo: ''
-  }
+
+  { path: '**', redirectTo: '' }
 ];

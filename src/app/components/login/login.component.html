@@ -1,0 +1,65 @@
+<div class="login-page">
+
+  <!-- LOGIN FORM -->
+  <div class="glass-card" *ngIf="!isLoggedIn">
+
+    <h3 class="text-center mb-4">Login</h3>
+
+    <form (ngSubmit)="login()" #loginForm="ngForm">
+
+      <div class="mb-3">
+        <label>Username</label>
+        <input
+          class="form-control"
+          required
+          [(ngModel)]="loginData.username"
+          name="username">
+      </div>
+
+      <div class="mb-3">
+        <label>Password</label>
+        <input
+          type="password"
+          class="form-control"
+          required
+          [(ngModel)]="loginData.password"
+          name="password">
+      </div>
+
+      <div class="mb-4">
+        <label>Role</label>
+        <select
+          class="form-select"
+          required
+          [(ngModel)]="loginData.role"
+          name="role">
+          <option value="" disabled selected>Select role</option>
+          <option value="Resident">Resident</option>
+          <option value="Helper">Helper</option>
+        </select>
+      </div>
+
+      <button
+        class="btn btn-success w-100"
+        [disabled]="!loginForm.valid">
+        Login
+      </button>
+
+    </form>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="glass-card success-card" *ngIf="isLoggedIn">
+    <div class="success-content">
+      <h3>✅ Login Successful</h3>
+      <p>Welcome back! You are logged in as {{ loginData.role }}.</p>
+
+      <button
+        class="btn btn-success mt-3"
+        (click)="goToHome()">
+        Go to Home
+      </button>
+    </div>
+  </div>
+
+</div>
