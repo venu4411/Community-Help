@@ -1,29 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-profile-details',
   standalone: true,
-  imports: [CommonModule],   // ✅ IMPORTANT FIX
-  templateUrl: './profile-details.component.html',
-  styleUrls: ['./profile-details.component.css']
+  selector: 'app-profile-details',
+  imports: [CommonModule],
+  templateUrl: './profile-details.component.html'
 })
 export class ProfileDetailsComponent implements OnInit {
 
   user: any;
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
-  ngOnInit(): void {
-    this.user = this.authService.getUser();
+  ngOnInit() {
+    this.user = this.auth.getUser();
+    console.log('PROFILE USER OBJECT 👉', this.user);
+  }
 
-    if (!this.user) {
-      this.router.navigate(['/login']);
-    }
+  logout() {
+    this.auth.logout();
+    this.router.navigate(['/']);
+  }
+
+  goBack() {
+    this.router.navigate(['/']);
   }
 }

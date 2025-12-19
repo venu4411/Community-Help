@@ -104,32 +104,39 @@
       Welcome to Community Help
     </h1>
 
-    <!-- BEFORE LOGIN -->
-    <div *ngIf="!authService.isLoggedIn()">
+    <!-- NOT LOGGED IN -->
+    <ng-container *ngIf="!authService.isLoggedIn(); else loggedInView">
+
       <p class="lead mb-4">
         Connect with neighbors and helpers around you
       </p>
 
-      <div class="d-flex justify-content-center gap-3">
-        <a routerLink="/register" class="btn btn-success btn-lg">
-          Get Started
-        </a>
+      <!-- GET STARTED -->
+      <button
+        class="btn btn-success m-2"
+        routerLink="/register">
+        Get Started
+      </button>
 
-        <a routerLink="/helper-registration" class="btn btn-outline-light btn-lg">
-          Join as Helper
-        </a>
-      </div>
-    </div>
+      <!-- JOIN AS HELPER -->
+      <button
+        class="btn btn-outline-light m-2"
+        routerLink="/helper-registration">
+        Join as Helper
+      </button>
 
-    <!-- AFTER LOGIN -->
-    <div *ngIf="authService.isLoggedIn()">
+    </ng-container>
+
+    <!-- LOGGED IN -->
+    <ng-template #loggedInView>
       <p class="lead mb-4">
         We’re glad to have you back 👋
       </p>
-    </div>
+    </ng-template>
 
   </div>
 </section>
+
 
 <!-- ================= BENEFITS ================= -->
 <section id="benefits" class="benefits reveal">

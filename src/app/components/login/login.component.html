@@ -1,47 +1,59 @@
 <div class="login-page">
   <div class="glass-card">
 
-    <h3 class="text-center mb-3">Login</h3>
+    <h3 class="text-center mb-4">Login</h3>
 
     <form (ngSubmit)="login()" #loginForm="ngForm">
 
-      <input
-        class="form-control mb-3"
-        placeholder="Username"
-        name="username"
-        [(ngModel)]="loginData.username"
-        required>
+      <!-- USERNAME -->
+      <div class="form-group">
+        <label>Username</label>
+        <input
+          type="text"
+          class="form-control"
+          name="username"
+          required
+          [(ngModel)]="loginData.username">
+      </div>
 
-      <input
-        type="password"
-        class="form-control mb-3"
-        placeholder="Password"
-        name="password"
-        [(ngModel)]="loginData.password"
-        required>
+      <!-- PASSWORD -->
+      <div class="form-group">
+        <label>Password</label>
+        <input
+          type="password"
+          class="form-control"
+          name="password"
+          required
+          [(ngModel)]="loginData.password">
+      </div>
 
-      <select
-        class="form-control mb-3"
-        name="role"
-        [(ngModel)]="loginData.role"
-        required>
-        <option value="">Select Role</option>
-        <option value="Resident">Resident</option>
-        <option value="Helper">Helper</option>
-      </select>
+      <!-- ROLE -->
+      <div class="form-group">
+        <label>Role</label>
+        <select
+          class="form-control"
+          name="role"
+          required
+          [(ngModel)]="loginData.role">
+          <option value="">Select Role</option>
+          <option value="Resident">Resident</option>
+          <option value="Helper">Helper</option>
+        </select>
+      </div>
 
-      <button
-        type="submit"
-        class="btn btn-primary w-100"
-        [disabled]="!loginForm.valid">
-        Login
-      </button>
-
-      <p class="text-danger mt-2" *ngIf="errorMessage">
+      <!-- ERROR -->
+      <p class="error-text" *ngIf="errorMessage">
         {{ errorMessage }}
       </p>
 
-    </form>
+      <!-- SUBMIT -->
+      <button
+        class="btn btn-success w-100 mt-3"
+        type="submit"
+        [disabled]="!loginForm.valid || loading">
+        {{ loading ? 'Logging in...' : 'Login' }}
+      </button>
 
+    </form>
   </div>
 </div>

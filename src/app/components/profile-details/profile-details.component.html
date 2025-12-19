@@ -1,19 +1,39 @@
-<div class="glass-card">
+<div class="profile-page">
+  <div class="glass-card profile-card">
 
-  <h3>User Details</h3>
+    <h3 class="text-center mb-4">User Profile</h3>
 
-  <p><strong>Name:</strong> {{ user.fullName }}</p>
-  <p><strong>Contact:</strong> {{ user.contact }}</p>
-  <p><strong>Role:</strong> {{ user.role }}</p>
+    <table class="glass-table">
+      <tr>
+        <th>Full Name</th>
+        <td>{{ user?.fullName }}</td>
+      </tr>
 
-  <!-- Resident -->
-  <p *ngIf="user.role === 'Resident'">
-    <strong>Location:</strong> {{ user.location }}
-  </p>
+      <tr>
+        <th>Contact</th>
+        <td>{{ user?.contact }}</td>
+      </tr>
 
-  <!-- Helper -->
-  <p *ngIf="user.role === 'Helper'">
-    <strong>Profession:</strong> {{ user.profession }}
-  </p>
+      <tr>
+        <th>Location</th>
+        <td>{{ user?.location }}</td>
+      </tr>
 
+      <tr>
+        <th>Role</th>
+        <td>{{ user?.role }}</td>
+      </tr>
+
+      <tr *ngIf="user?.role === 'Helper'">
+        <th>Profession</th>
+        <td>{{ user?.profession }}</td>
+      </tr>
+    </table>
+
+    <div class="d-flex gap-2 mt-4">
+      <button class="btn btn-outline-light w-50" (click)="goBack()">← Back</button>
+      <button class="btn btn-outline-danger w-50" (click)="logout()">Logout</button>
+    </div>
+
+  </div>
 </div>

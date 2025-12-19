@@ -9,10 +9,11 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
+
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule], // ✅ REQUIRED
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.css']
 })
@@ -57,13 +58,21 @@ export class LandingComponent implements AfterViewInit {
   }
 
   goToProfile(): void {
-    this.router.navigate(['/profile']);
+    this.router.navigate(['/profile']); 
   }
 
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/']);
   }
+  goToRegister(): void {
+  this.router.navigate(['/register']);
+  }
+
+  goToHelperRegister(): void {
+    this.router.navigate(['/helper-registration']);
+  }
+
 
   benefits: string[] = [
     'Simple Requests',

@@ -1,79 +1,43 @@
-/* BACKGROUND */
 .login-page {
   min-height: 100vh;
-  width: 100vw;
-  padding: 160px 20px 80px;
-
-  background: radial-gradient(
-    circle at top,
-    #1f2937 0%,
-    #020617 70%
-  );
-
-  display: flex;
-  justify-content: center;
-}
-
-/* GLASS CARD */
-.glass-card {
-  width: 500px;
-  max-width: 95%;
-  padding: 26px 24px;
-
-  background: rgba(255, 255, 255, 0.32);
-  border-radius: 14px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.12);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-
-  color: #020617;
-}
-
-/* INPUTS */
-.form-control,
-.form-select {
-  height: 42px;
-  font-size: 14px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 8px;
-  border: none;
-}
-
-.form-control:focus,
-.form-select:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.6);
-}
-
-/* BUTTON */
-.btn-success {
-  background-color: #22c55e;
-  border: none;
-}
-
-.btn-success:hover {
-  background-color: #16a34a;
-}
-
-/* SUCCESS */
-.success-card {
-  min-height: 240px;
   display: flex;
   justify-content: center;
   align-items: center;
+  background: radial-gradient(circle at top, #1f4037, #0a0f1e);
 }
 
-.success-content {
-  text-align: center;
+.glass-card {
+  width: 380px;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
 }
 
-.success-content h3 {
-  color: #22c55e;
-  margin-bottom: 10px;
+.form-group {
+  margin-bottom: 15px;
 }
 
-.success-content p {
-  color: #d1d5db;
+label {
   font-size: 14px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+}
+
+.error-text {
+  color: #ffb3b3;
+  font-size: 14px;
+  margin-top: 10px;
 }

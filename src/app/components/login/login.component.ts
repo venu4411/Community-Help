@@ -16,10 +16,11 @@ export class LoginComponent {
   loginData = {
     username: '',
     password: '',
-    role: ''
+    role: '' // Resident / Helper
   };
 
   errorMessage = '';
+  loading = false;
 
   constructor(
     private authService: AuthService,
@@ -27,10 +28,24 @@ export class LoginComponent {
   ) {}
 
   login(): void {
-    this.authService.loginUser(this.loginData).subscribe({
+    this.authService.loginUser({
+      username: this.loginData.username,
+      password: this.loginData.password
+    }).subscribe({
       next: (res: any) => {
-        this.authService.setUser(res.user);
-        this.router.navigate(['/']); // ✅ Landing page
+
+        console.log('LOGIN RESPONSE 👉', res);
+
+        const user = {
+          id: res.user.id,
+          fullName: res.user.full_name,
+          contact: res.user.contact,
+          location: res.user.location,
+          role: res.user.role
+        };
+
+        this.authService.setUser(user);
+        this.router.navigate(['/']); // landing page
       },
       error: () => {
         this.errorMessage = 'Invalid username or password';
@@ -38,7 +53,5 @@ export class LoginComponent {
     });
   }
 
-  goToHome(): void {
-    this.router.navigate(['/']);
-  }
+
 }

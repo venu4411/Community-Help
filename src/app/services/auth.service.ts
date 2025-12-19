@@ -2,38 +2,23 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-
-  private API_URL = 'http://localhost:3000/api'; // backend URL
-
+  private API_URL = 'http://localhost:3000/api';
   private currentUser: any = null;
 
   constructor(private http: HttpClient) {}
 
-  /* ================= REGISTER ================= */
-  registerUser(userData: any): Observable<any> {
-    return this.http.post(`${this.API_URL}/register`, userData);
+  loginUser(data: any): Observable<any> {
+    return this.http.post(`${this.API_URL}/login`, data);
   }
 
-  registerHelper(helperData: any): Observable<any> {
-    return this.http.post(`${this.API_URL}/helper/register`, helperData);
-  }
-
-  /* ================= LOGIN ================= */
-  loginUser(loginData: any): Observable<any> {
-    return this.http.post(`${this.API_URL}/login`, loginData);
-  }
-
-  /* ================= SESSION ================= */
-  setUser(user: any): void {
+  setUser(user: any) {
     this.currentUser = user;
     localStorage.setItem('user', JSON.stringify(user));
   }
 
-  getUser(): any {
+  getUser() {
     if (!this.currentUser) {
       const stored = localStorage.getItem('user');
       this.currentUser = stored ? JSON.parse(stored) : null;
@@ -45,8 +30,13 @@ export class AuthService {
     return this.getUser() !== null;
   }
 
-  logout(): void {
+  logout() {
     this.currentUser = null;
     localStorage.removeItem('user');
   }
+  /* ================= REGISTER ================= */
+  registerUser(userData: any): Observable<any> {
+    return this.http.post(`${this.API_URL}/register`, userData);
+  }
+
 }
