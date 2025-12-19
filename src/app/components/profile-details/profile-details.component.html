@@ -1,0 +1,39 @@
+<div class="profile-page">
+  <div class="glass-card profile-card">
+
+    <h3 class="text-center mb-4">User Profile</h3>
+
+    <table class="glass-table">
+      <tr>
+        <th>Full Name</th>
+        <td>{{ user?.fullName }}</td>
+      </tr>
+
+      <tr>
+        <th>Contact</th>
+        <td>{{ user?.contact }}</td>
+      </tr>
+
+      <tr>
+        <th>Location</th>
+        <td>{{ user?.location }}</td>
+      </tr>
+
+      <tr>
+        <th>Role</th>
+        <td>{{ user?.role }}</td>
+      </tr>
+
+      <tr *ngIf="user?.role === 'Helper'">
+        <th>Profession</th>
+        <td>{{ user?.profession }}</td>
+      </tr>
+    </table>
+
+    <div class="d-flex gap-2 mt-4">
+      <button class="btn btn-outline-light w-50" (click)="goBack()">← Back</button>
+      <button class="btn btn-outline-danger w-50" (click)="logout()">Logout</button>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,84 @@
+/* NAV WRAPPER */
+.top-nav {
+  position: fixed;
+  top: 20px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 9999; /* 🔥 VERY IMPORTANT */
+  pointer-events: auto;
+}
+
+/* NAV CONTAINER */
+.nav-container {
+  background: rgba(15, 15, 15, 0.92);
+  backdrop-filter: blur(14px);
+  border-radius: 999px;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  max-width: 1100px;
+  width: calc(100% - 40px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* LOGO */
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.logo-box {
+  width: 16px;
+  height: 16px;
+  background: #22c55e;
+  border-radius: 4px;
+}
+
+/* LINKS */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 26px;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  justify-content: center;
+}
+
+.nav-links a {
+  color: #d1d5db;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.nav-links a:hover {
+  color: #ffffff;
+}
+
+/* CTA BUTTON */
+.btn-contact {
+  background: #22c55e;
+  color: #000;
+  border-radius: 999px;
+  padding: 6px 18px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.btn-contact:hover {
+  background: #16a34a;
+}
+
+/* MOBILE */
+@media (max-width: 991px) {
+  .nav-links {
+    display: none;
+  }
+}

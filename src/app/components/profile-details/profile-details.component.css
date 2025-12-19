@@ -1,0 +1,46 @@
+.profile-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(
+    ellipse at center,
+    #0f2027 0%,
+    #203a43 50%,
+    #000428 100%
+  );
+}
+
+.profile-card {
+  width: 420px;
+  padding: 30px;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.glass-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.glass-table th,
+.glass-table td {
+  padding: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.glass-table th {
+  text-align: left;
+  opacity: 0.8;
+}
+
+.glass-table td {
+  text-align: right;
+}

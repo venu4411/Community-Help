@@ -1,0 +1,225 @@
+<!-- ================= NAVBAR ================= -->
+<nav class="top-nav" [class.shrink]="isScrolled">
+  <div class="nav-container">
+
+    <!-- LOGO -->
+    <div class="nav-logo">
+      <span class="logo-box"></span>
+      <span class="logo-text">Community Help</span>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="nav-search">
+      <input
+        type="text"
+        class="form-control search-input"
+        placeholder="Search help, location..."
+      />
+    </div>
+
+    <!-- LINKS -->
+    <ul class="nav-links d-none d-lg-flex">
+      <li>
+        <a href="#benefits">Benefits</a>
+      </li>
+    </ul>
+
+    <!-- CONTACT (BEFORE LOGIN ONLY) -->
+    <a
+      *ngIf="!authService.isLoggedIn()"
+      routerLink="/register"
+      class="btn btn-contact d-none d-lg-inline">
+      Contact
+    </a>
+
+    <!-- LOGIN (BEFORE LOGIN) -->
+    <button
+      *ngIf="!authService.isLoggedIn()"
+      class="btn btn-outline-light"
+      (click)="goToLogin()">
+      Login
+    </button>
+
+    <!-- PROFILE (AFTER LOGIN) -->
+    <button
+      *ngIf="authService.isLoggedIn()"
+      class="btn btn-outline-light"
+      (click)="goToProfile()">
+      Profile
+    </button>
+
+    <!-- LOGOUT (AFTER LOGIN) -->
+    <button
+      *ngIf="authService.isLoggedIn()"
+      class="btn btn-outline-danger ms-2"
+      (click)="logout()">
+      Logout
+    </button>
+
+    <!-- MOBILE MENU -->
+    <button class="hamburger d-lg-none" (click)="toggleMobileMenu()">
+      ☰
+    </button>
+  </div>
+
+  <!-- MOBILE DRAWER -->
+  <div class="mobile-drawer" [class.open]="mobileMenuOpen">
+    <a href="#benefits" (click)="toggleMobileMenu()">Benefits</a>
+
+    <a
+      *ngIf="!authService.isLoggedIn()"
+      routerLink="/register"
+      class="btn btn-success mt-3">
+      Contact
+    </a>
+
+    <button
+      *ngIf="!authService.isLoggedIn()"
+      class="btn btn-outline-light mt-3"
+      (click)="goToLogin()">
+      Login
+    </button>
+
+    <button
+      *ngIf="authService.isLoggedIn()"
+      class="btn btn-outline-light mt-3"
+      (click)="goToProfile()">
+      Profile
+    </button>
+
+    <button
+      *ngIf="authService.isLoggedIn()"
+      class="btn btn-outline-danger mt-2"
+      (click)="logout()">
+      Logout
+    </button>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<section class="hero text-center text-white">
+  <div class="container">
+
+    <h1 class="fw-bold display-5 mb-3">
+      Welcome to Community Help
+    </h1>
+
+    <!-- NOT LOGGED IN -->
+    <ng-container *ngIf="!authService.isLoggedIn(); else loggedInView">
+
+      <p class="lead mb-4">
+        Connect with neighbors and helpers around you
+      </p>
+
+      <!-- GET STARTED -->
+      <button
+        class="btn btn-success m-2"
+        routerLink="/register">
+        Get Started
+      </button>
+
+      <!-- JOIN AS HELPER -->
+      <button
+        class="btn btn-outline-light m-2"
+        routerLink="/helper-registration">
+        Join as Helper
+      </button>
+
+    </ng-container>
+
+    <!-- LOGGED IN -->
+    <ng-template #loggedInView>
+      <p class="lead mb-4">
+        We’re glad to have you back 👋
+      </p>
+    </ng-template>
+
+  </div>
+</section>
+
+
+<!-- ================= BENEFITS ================= -->
+<section id="benefits" class="benefits reveal">
+  <div class="container">
+    <h2 class="text-center mb-5">Why People Love It</h2>
+
+    <div class="row g-4">
+      <div class="col-md-4" *ngFor="let b of benefits">
+        <div class="benefit-card">
+          <h5>{{ b }}</h5>
+          <p>Designed to make helping simple and reliable.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= POPULAR HELPERS ================= -->
+<section class="helpers-section reveal">
+  <div class="container text-center">
+
+    <p class="section-tag">POPULAR HELPERS</p>
+    <h2 class="section-title">
+      People who make the community stronger
+    </h2>
+
+    <div class="row justify-content-center g-4 mt-4">
+      <div class="col-md-4" *ngFor="let helper of popularHelpers">
+        <div class="helper-card">
+
+          <div class="helper-img-wrapper">
+            <img
+              [src]="helper.image"
+              alt="{{ helper.name }}"
+              class="helper-img"
+            />
+          </div>
+
+          <h5 class="helper-name">{{ helper.name }}</h5>
+          <p class="helper-role">{{ helper.role }}</p>
+          <div class="helper-rating">⭐ {{ helper.rating }}</div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TRUST ================= -->
+<section class="trust text-center reveal">
+  <div class="container">
+    <h2 class="mb-4">Trusted by Communities</h2>
+
+    <div class="row g-4">
+      <div class="col-6 col-md-3">
+        <div class="trust-card">
+          <h3>50+</h3>
+          <p>Communities</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="trust-card">
+          <h3>1000+</h3>
+          <p>Requests</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="trust-card">
+          <h3>95%</h3>
+          <p>Positive Feedback</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="trust-card">
+          <h3>24/7</h3>
+          <p>Support</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer text-center">
+  © 2025 Neighborhood Community Help Portal
+</footer>

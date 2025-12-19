@@ -1,0 +1,66 @@
+<div class="registration-page">
+
+  <!-- FORM -->
+  <div class="glass-card" *ngIf="!isRegistered">
+    <h3 class="text-center mb-4">User Registration</h3>
+
+    <form (ngSubmit)="registerUser()" #regForm="ngForm">
+
+      <input class="form-control mb-3"
+             placeholder="Full Name"
+             name="fullName"
+             [(ngModel)]="user.fullName"
+             required>
+
+      <input class="form-control mb-3"
+             placeholder="Contact"
+             name="contact"
+             [(ngModel)]="user.contact"
+             required>
+
+      <input class="form-control mb-3"
+             placeholder="Username"
+             name="username"
+             [(ngModel)]="user.username"
+             required>
+
+      <input type="password"
+             class="form-control mb-3"
+             placeholder="Password"
+             name="password"
+             [(ngModel)]="user.password"
+             required>
+
+      <input class="form-control mb-3"
+             placeholder="Location"
+             name="location"
+             [(ngModel)]="user.location"
+             required>
+
+      <input class="form-control mb-3" value="Resident" disabled>
+
+      <button
+        type="submit"
+        class="btn btn-success w-100"
+        [disabled]="!regForm.valid">
+        Register
+      </button>
+
+      <p class="text-danger mt-2" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </p>
+    </form>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="glass-card success-card" *ngIf="isRegistered">
+    <h3>✅ Successfully Registered</h3>
+    <p>Your account has been created.</p>
+
+    <button class="btn btn-outline-success mt-3"
+            (click)="goToHome()">
+      Go to Home
+    </button>
+  </div>
+
+</div>

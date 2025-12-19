@@ -1,0 +1,120 @@
+/* SAME BACKGROUND AS LANDING & RESIDENT */
+.registration-page {
+  min-height: 100vh;
+  width: 100vw;
+  padding: 80px 20px 80px;
+
+  background: radial-gradient(
+    circle at top,
+    #1f2937 0%,
+    #020617 70%
+  );
+
+  display: flex;
+  justify-content: center;
+}
+
+/* GLASS CARD */
+.glass-card {
+  width: 500px;
+  max-width: 95%;
+  padding: 26px 24px;
+
+  background: rgba(255, 255, 255, 0.32);
+  border-radius: 14px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  color: #020617;
+}
+
+/* INPUTS */
+.form-control {
+  height: 42px;
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  border: none;
+}
+
+.form-control:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.6);
+}
+
+/* HELP PILLS */
+.help-pill-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.help-pill {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.75);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.help-pill:hover {
+  background: rgba(34, 197, 94, 0.15);
+}
+
+.help-pill.active {
+  background: #22c55e;
+  color: #020617;
+  font-weight: 600;
+}
+
+/* BUTTONS */
+.btn-success {
+  background-color: #22c55e;
+  border: none;
+}
+
+.btn-success:hover {
+  background-color: #16a34a;
+}
+
+/* SUCCESS CARD FIX */
+.success-card {
+  width: 500px;
+  max-width: 90%;
+  min-height: 200px;
+  padding: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* CENTER CONTENT */
+.success-content {
+  text-align: center;
+  padding: 10px 20px;
+}
+
+/* SUCCESS TEXT */
+.success-content h3 {
+  color: #22c55e;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.success-content p {
+  color: #d1d5db;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* SUCCESS BUTTON */
+.success-content .btn-success {
+  padding: 10px 28px;
+  font-size: 14px;
+  border-radius: 999px;
+}
