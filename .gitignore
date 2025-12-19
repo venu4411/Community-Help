@@ -1,13 +1,13 @@
 # Frontend
-/front_end/node_modules
-/front_end/dist
-/front_end/.angular
+front_end/node_modules
+front_end/dist
+front_end/.angular
 
-# Backend (Node / Spring / etc)
+# Backend
 backend/node_modules
 backend/target
 backend/.env
 
-# General
-.vscode
+# Common
 .env
+.vscode
