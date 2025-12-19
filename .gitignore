@@ -1,0 +1,13 @@
+# Frontend
+/front_end/node_modules
+/front_end/dist
+/front_end/.angular
+
+# Backend (Node / Spring / etc)
+backend/node_modules
+backend/target
+backend/.env
+
+# General
+.vscode
+.env
