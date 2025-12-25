@@ -1,4 +1,3 @@
-// backend/src/app.ts
 import express from 'express';
 import cors from 'cors';
 import authRoutes from './routes/auth.routes';
