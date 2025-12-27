@@ -1,39 +1,96 @@
 <div class="profile-page">
-  <div class="glass-card profile-card">
 
-    <h3 class="text-center mb-4">User Profile</h3>
+  <!-- SIDE MENU -->
+  <aside class="side-menu">
+    <h3 class="menu-title">MENU</h3>
 
-    <table class="glass-table">
-      <tr>
-        <th>Full Name</th>
-        <td>{{ user?.fullName }}</td>
-      </tr>
+    <button class="menu-item active">🏠 Dashboard</button>
+    <button class="menu-item">📝 Tasks</button>
+    <button class="menu-item">📅 Calendar</button>
+    <button class="menu-item">📊 Analytics</button>
+    <button class="menu-item">👥 Team</button>
 
-      <tr>
-        <th>Contact</th>
-        <td>{{ user?.contact }}</td>
-      </tr>
+    <button class="menu-item back-btn" (click)="goBack()">⬅ Back</button>
+  </aside>
 
-      <tr>
-        <th>Location</th>
-        <td>{{ user?.location }}</td>
-      </tr>
+  <!-- PROFILE CARD -->
+  <div class="profile-card">
 
-      <tr>
-        <th>Role</th>
-        <td>{{ user?.role }}</td>
-      </tr>
-
-      <tr *ngIf="user?.role === 'Helper'">
-        <th>Profession</th>
-        <td>{{ user?.profession }}</td>
-      </tr>
-    </table>
-
-    <div class="d-flex gap-2 mt-4">
-      <button class="btn btn-outline-light w-50" (click)="goBack()">← Back</button>
-      <button class="btn btn-outline-danger w-50" (click)="logout()">Logout</button>
+    <!-- HEADER -->
+    <div class="header">
+      <h2>Personal Information</h2>
+      <button class="edit-btn" *ngIf="!editMode" (click)="toggleEdit()">Edit</button>
+      <button class="cancel-btn" *ngIf="editMode" (click)="toggleEdit()">Cancel</button>
     </div>
+
+    <!-- SUCCESS MESSAGE -->
+    <div class="success-msg" *ngIf="successMessage">
+      {{ successMessage }}
+    </div>
+
+    <!-- FORM GRID -->
+    <div class="form-grid">
+
+      <div>
+        <label>Full Name</label>
+        <input [(ngModel)]="user.fullName" [disabled]="!editMode">
+      </div>
+
+      <div>
+        <label>Username</label>
+        <input [(ngModel)]="user.username" [disabled]="!editMode">
+      </div>
+
+      <div>
+        <label>Contact</label>
+        <input [(ngModel)]="user.contact" [disabled]="!editMode">
+      </div>
+
+      <div>
+        <label>Role</label>
+        <input [value]="user.role" disabled>
+      </div>
+
+      <div>
+        <label>Location</label>
+        <input [(ngModel)]="user.location" [disabled]="!editMode">
+      </div>
+
+      <div>
+        <label>Gender</label>
+        <input [value]="user.gender || '—'" disabled>
+      </div>
+
+      <div>
+        <label>Qualification</label>
+        <input [value]="user.qualification || '—'" disabled>
+      </div>
+
+      <div>
+        <label>Type of Help</label>
+        <input [value]="user.helpType || '—'" disabled>
+      </div>
+
+      <div *ngIf="user.role === 'Helper'">
+        <label>Price</label>
+        <input [(ngModel)]="user.price" [disabled]="!editMode">
+      </div>
+
+      <!-- PASSWORD -->
+      <div class="password-field">
+        <label>Password</label>
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          [(ngModel)]="user.password"
+          [disabled]="!editMode">
+        <span class="eye" (click)="togglePassword()">👁</span>
+      </div>
+
+    </div>
+
+    <button class="save-btn" *ngIf="editMode" (click)="save()">
+      Save Changes
+    </button>
 
   </div>
 </div>

@@ -1,46 +1,229 @@
+/* ================= PAGE ================= */
 .profile-page {
   min-height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background: radial-gradient(
-    ellipse at center,
-    #0f2027 0%,
-    #203a43 50%,
-    #000428 100%
-  );
-}
-
-.profile-card {
-  width: 420px;
+  gap: 24px;
   padding: 30px;
-}
 
-.glass-card {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 16px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: radial-gradient(circle at top, #1f2937, #020617 75%);
+  font-family: 'Inter', sans-serif;
   color: #fff;
 }
 
-.glass-table {
-  width: 100%;
-  border-collapse: collapse;
+/* ================= SIDE MENU ================= */
+.side-menu {
+  width: 230px;
+  padding: 24px;
+  border-radius: 22px;
+
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.55),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
-.glass-table th,
-.glass-table td {
-  padding: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+/* MENU TITLE */
+.menu-title {
+  font-size: 14px;
+  letter-spacing: 1px;
+  opacity: 0.7;
+  margin-bottom: 10px;
 }
 
-.glass-table th {
+/* MENU ITEMS */
+.menu-item {
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 14px;
   text-align: left;
-  opacity: 0.8;
+  cursor: pointer;
+
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
-.glass-table td {
-  text-align: right;
+.menu-item:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateX(4px);
+}
+
+.menu-item.active {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  font-weight: 600;
+}
+
+/* BACK BUTTON */
+.back-btn {
+  margin-top: auto;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ================= PROFILE CARD ================= */
+.profile-card {
+  flex: 1;
+  padding: 28px 34px;
+  border-radius: 26px;
+
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 30px 60px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+/* ================= HEADER ================= */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.header h2 {
+  font-weight: 600;
+}
+
+/* EDIT / CANCEL BUTTON */
+.edit-btn,
+.cancel-btn {
+  padding: 10px 22px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  color: #fff;
+}
+
+.edit-btn {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+}
+
+.cancel-btn {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ================= SUCCESS MESSAGE ================= */
+.success-msg {
+  background: rgba(34, 197, 94, 0.25);
+  color: #bbf7d0;
+  padding: 12px;
+  border-radius: 14px;
+  margin-bottom: 14px;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* ================= FORM GRID ================= */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px 18px;
+}
+
+/* LABEL */
+.form-grid label {
+  font-size: 12px;
+  opacity: 0.75;
+  margin-bottom: 4px;
+  display: block;
+}
+
+/* INPUTS */
+.form-grid input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: none;
+  outline: none;
+
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: 14px;
+}
+
+.form-grid input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.form-grid input:disabled {
+  opacity: 0.75;
+}
+
+.form-grid input:focus {
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.35);
+}
+
+/* ================= PASSWORD FIELD ================= */
+.password-field {
+  position: relative;
+}
+
+.password-field .eye {
+  position: absolute;
+  right: 14px;
+  top: 38px;
+  cursor: pointer;
+  opacity: 0.75;
+  font-size: 16px;
+}
+
+.password-field .eye:hover {
+  opacity: 1;
+}
+
+/* ================= SAVE BUTTON ================= */
+.save-btn {
+  margin-top: 20px;
+  padding: 14px 40px;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.save-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 30px rgba(34, 197, 94, 0.45);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 1100px) {
+  .form-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-page {
+    flex-direction: column;
+  }
+
+  .side-menu {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
 }

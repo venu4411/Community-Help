@@ -1,42 +1,74 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
-  private API_URL = 'http://localhost:3000/api';
-  private currentUser: any = null;
+
+  private API = 'http://localhost:3000/api';
 
   constructor(private http: HttpClient) {}
 
-  loginUser(data: any): Observable<any> {
-    return this.http.post(`${this.API_URL}/login`, data);
+  /* ================= USER REGISTER ================= */
+  registerUser(data: any) {
+    return this.http.post(`${this.API}/register`, data);
   }
 
+  /* ================= HELPER REGISTER ================= */
+  registerHelper(data: any) {
+    return this.http.post(`${this.API}/helper/register`, data);
+  }
+
+  /* ================= LOGIN ================= */
+  userLogin(data: { username: string; password: string }) {
+    return this.http.post(`${this.API}/login/user`, data);
+  }
+
+  helperLogin(data: { username: string; password: string }) {
+    return this.http.post(`${this.API}/login/helper`, data);
+  }
+
+  /* ================= PROFILE UPDATE ================= */
+  updateUser(id: number, role: string, data: any) {
+    return this.http.put(
+      `${this.API}/update/${role.toLowerCase()}/${id}`,
+      data
+    );
+  }
+
+  /* ================= SESSION ================= */
   setUser(user: any) {
-    this.currentUser = user;
     localStorage.setItem('user', JSON.stringify(user));
   }
 
   getUser() {
-    if (!this.currentUser) {
-      const stored = localStorage.getItem('user');
-      this.currentUser = stored ? JSON.parse(stored) : null;
-    }
-    return this.currentUser;
+    return JSON.parse(localStorage.getItem('user') || 'null');
   }
 
-  isLoggedIn(): boolean {
-    return this.getUser() !== null;
+  isLoggedIn() {
+    return !!localStorage.getItem('user');
   }
 
   logout() {
-    this.currentUser = null;
     localStorage.removeItem('user');
   }
-  /* ================= REGISTER ================= */
-  registerUser(userData: any): Observable<any> {
-    return this.http.post(`${this.API_URL}/register`, userData);
+  searchHelpers(query: string) {
+    return this.http.get<any[]>(
+      `http://localhost:3000/api/search/helpers?q=${query}`
+    );
   }
+
+  searchSuggestions(query: string) {
+    return this.http.get<string[]>(
+      `http://localhost:3000/api/search/suggestions?q=${query}`
+    );
+  }
+  getHelpersByType(type: string) {
+    return this.http.get<any[]>(`${this.API}/helpers/${type}`);
+  }
+  
+  
+
 
 }

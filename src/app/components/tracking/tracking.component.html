@@ -1,0 +1,33 @@
+<div class="page">
+
+  <div class="track-card glass">
+
+    <h2>Tracking Helper</h2>
+
+    <div class="helper-info">
+      <img class="avatar"
+        src="https://img.freepik.com/premium-photo/funny-3d-avatar-man-suit-professional-lawyer-office-worker_1270124-12567.jpg" />
+      <div>
+        <h3>{{ helper.fullName }}</h3>
+        <p>{{ helper.priceType }}</p>
+        <small>Destination: {{ booking.location }}</small>
+      </div>
+    </div>
+
+    <div class="map">
+      <div class="route"></div>
+      <div class="helper-dot" [style.left.%]="progress"></div>
+      <div class="home-dot"></div>
+    </div>
+
+    <p class="status">{{ status }}</p>
+
+    <div class="progress-bar">
+      <div class="progress" [style.width.%]="progress"></div>
+    </div>
+
+    <button class="home-btn" (click)="goHome()">Back to Home</button>
+
+  </div>
+
+</div>

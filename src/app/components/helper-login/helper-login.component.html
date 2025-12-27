@@ -1,7 +1,7 @@
 <div class="auth-container">
   <div class="auth-card">
 
-    <h2>Resident Login</h2>
+    <h2>Helper Login</h2>
 
     <div class="error" *ngIf="error">{{ error }}</div>
 
@@ -9,25 +9,22 @@
     <input
       type="text"
       placeholder="Username"
-      [(ngModel)]="formData.username">
+      [(ngModel)]="formData.username" />
 
-    <!-- Password -->
+    <!-- Password with eye icon -->
     <div class="password-wrapper">
       <input
-        id="password-field"
         [type]="showPassword ? 'text' : 'password'"
-        class="form-control"
         placeholder="Password"
-        [(ngModel)]="formData.password">
+        [(ngModel)]="formData.password" />
 
-      <span
-        class="field-icon toggle-password"
-        (click)="togglePassword()">
+      <span class="field-icon" (click)="togglePassword()">
         {{ showPassword ? '🙈' : '👁' }}
       </span>
     </div>
 
-    <input value="Resident" disabled>
+    <!-- Role -->
+    <input type="text" value="Helper" disabled />
 
     <button (click)="login()">Login</button>
 

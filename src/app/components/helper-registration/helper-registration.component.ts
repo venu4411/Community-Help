@@ -2,65 +2,73 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-helper-registration',
   standalone: true,
   imports: [CommonModule, FormsModule],
+  selector: 'app-helper-registration',
   templateUrl: './helper-registration.component.html',
   styleUrls: ['./helper-registration.component.css']
 })
 export class HelperRegistrationComponent {
 
-  helper = {
+  form = {
     fullName: '',
     contact: '',
     username: '',
     password: '',
-    helps: [] as string[],
-    otherHelp: '',
-    role: 'Helper'
+    gender: 'male',
+    age: null as number | null,
+    qualification: '',
+    location: '',
+    priceType: 'Hourly',
+    price: null as number | null
   };
 
   helpOptions = [
-    'Plumbing',
-    'Electrician',
-    'Grocery',
-    'Tutoring',
-    'Cleaning',
-    'Others'
+    { label: 'Electrician', checked: false },
+    { label: 'Plumber', checked: false },
+    { label: 'Carpenter', checked: false },
+    { label: 'Cleaner', checked: false },
+    { label: 'Painter', checked: false },
+    { label: 'Mechanic', checked: false },
+    { label: 'Cook', checked: false },
+    { label: 'Other', checked: false }
   ];
 
-  isRegistered = false;
+  otherHelp = '';
+  errorMessage = '';
+  successMessage = '';
 
-  constructor(private router: Router) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
-  toggleHelp(help: string): void {
-    const index = this.helper.helps.indexOf(help);
-
-    if (index === -1) {
-      this.helper.helps.push(help);
-    } else {
-      this.helper.helps.splice(index, 1);
-      if (help === 'Others') {
-        this.helper.otherHelp = '';
-      }
-    }
-  }
-
-  registerHelper(): void {
-    if (
-      this.helper.fullName &&
-      this.helper.contact &&
-      this.helper.username &&
-      this.helper.password &&
-      this.helper.helps.length > 0
-    ) {
-      this.isRegistered = true;
-    }
-  }
-
-  goToHome(): void {
+  back() {
     this.router.navigate(['/']);
+  }
+
+  register() {
+    const selected = this.helpOptions
+      .filter(h => h.checked)
+      .map(h => h.label);
+
+    if (selected.includes('Other') && this.otherHelp.trim()) {
+      selected.push(this.otherHelp.trim());
+    }
+
+    const payload = {
+      ...this.form,
+      helpType: selected.join(', ')
+    };
+
+    this.auth.registerHelper(payload).subscribe({
+      next: () => {
+        this.successMessage = 'Registration successful';
+        this.errorMessage = '';
+      },
+      error: (err) => {
+        this.errorMessage = err.error?.message || 'Registration failed';
+      }
+    });
   }
 }

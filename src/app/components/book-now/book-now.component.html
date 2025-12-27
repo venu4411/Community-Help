@@ -1,0 +1,51 @@
+<div class="page" *ngIf="helper">
+
+  <button class="back-btn" (click)="goBack()">⬅ Back</button>
+
+  <div class="glass-container animate">
+
+    <!-- LEFT : HELPER INFO -->
+    <div class="helper-section">
+
+      <img class="avatar" [src]="getProfileImage()" />
+
+      <h3 class="name">{{ helper.fullName }}</h3>
+
+      <div class="info">
+        <p><span>Location</span> : {{ helper.location }}</p>
+        <p><span>Contact</span> : {{ helper.contact }}</p>
+        <p><span>Gender</span> : {{ helper.gender }}</p>
+        <p><span>Service</span> : {{ helper.priceType }}</p>
+      </div>
+
+      <div class="price">₹{{ helper.price }}</div>
+
+    </div>
+
+    <!-- RIGHT : BOOKING FORM -->
+    <div class="form-section">
+
+      <h3 class="form-title">Booking Details</h3>
+
+      <label>Date</label>
+      <input type="date" [min]="today" [(ngModel)]="booking.date" />
+
+      <label>Time</label>
+      <input type="time" [(ngModel)]="booking.time" />
+
+      <label>Location</label>
+      <input
+        type="text"
+        placeholder="Enter service location"
+        [(ngModel)]="booking.location"
+      />
+
+      <button class="confirm-btn" (click)="continueToPayment()">
+        Continue to Payment
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

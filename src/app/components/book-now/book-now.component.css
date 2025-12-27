@@ -1,0 +1,147 @@
+.page {
+  min-height: 100vh;
+  padding: 50px;
+  background: radial-gradient(circle at top, #1f2937, #020617);
+  color: white;
+}
+
+/* BACK */
+.back-btn {
+  background: transparent;
+  border: 1px solid #22c55e;
+  color: #22c55e;
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-bottom: 30px;
+}
+
+/* CONTAINER */
+.glass-container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 40px;
+  display: flex;
+  gap: 50px;
+  border-radius: 32px;
+  background: linear-gradient(
+    145deg,
+    rgba(255,255,255,0.14),
+    rgba(255,255,255,0.05)
+  );
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* LEFT */
+.helper-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* AVATAR */
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 14px;
+}
+
+/* NAME */
+.name {
+  font-size: 26px;
+  color: #22c55e;
+  margin-bottom: 20px;
+}
+
+/* INFO */
+.info {
+  width: 100%;
+  max-width: 260px;
+}
+
+.info p {
+  font-size: 15px;
+  margin-bottom: 12px;
+  color: #e5e7eb;
+}
+
+.info span {
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+/* PRICE */
+.price {
+  margin-top: 26px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #facc15;
+}
+
+/* RIGHT */
+.form-section {
+  flex: 1;
+}
+
+.form-title {
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.form-section label {
+  display: block;
+  margin: 14px 0 6px;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.form-section input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: none;
+  background: #374151;
+  color: white;
+  outline: none;
+}
+
+/* BUTTON */
+.confirm-btn {
+  margin-top: 26px;
+  width: 100%;
+  padding: 14px;
+  border-radius: 30px;
+  border: none;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ANIMATION */
+.animate {
+  animation: fadeUp 0.6s ease;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .glass-container {
+    flex-direction: column;
+  }
+}

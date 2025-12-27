@@ -1,0 +1,62 @@
+<div class="page">
+
+  <div class="top-bar">
+    <button class="back-btn" (click)="goBack()">⬅ Back</button>
+    <h2>{{ helpType }} Helpers</h2>
+  </div>
+
+  <div class="grid">
+
+    <div class="helper-card glass animate" *ngFor="let h of helpers">
+
+      <h3 class="name">{{ h.fullName }}</h3>
+
+      <div class="card-body">
+
+        <!-- LEFT DETAILS -->
+        <div class="info">
+          <div class="row">
+            <span class="label">Location</span>
+            <span class="value">{{ h.location }}</span>
+          </div>
+
+          <div class="row">
+            <span class="label">Contact</span>
+            <span class="value">{{ h.contact }}</span>
+          </div>
+
+          <div class="row">
+            <span class="label">Qualification</span>
+            <span class="value">{{ h.qualification }}</span>
+          </div>
+
+          <div class="row">
+            <span class="label">Profile</span>
+            <span class="value">{{ h.gender }} · {{ h.age }} yrs</span>
+          </div>
+        </div>
+
+        <!-- RIGHT IMAGE -->
+        <div class="image-box">
+          <img [src]="getImage(h.gender)" />
+        </div>
+
+      </div>
+
+      <div class="price">
+        {{ h.priceType }} · ₹{{ h.price }}
+      </div>
+
+      <button class="book-btn" (click)="bookHelper(h)">
+        Book Now
+      </button>
+
+    </div>
+
+  </div>
+
+  <p class="empty" *ngIf="helpers.length === 0">
+    No helpers found
+  </p>
+
+</div>

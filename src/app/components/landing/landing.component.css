@@ -39,16 +39,21 @@ html {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #ffffff;
+}
+
+.logo-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;      /* fills the circle properly */
+  background-color: #fff; /* avoids transparency issues */
+}
+
+.logo-text {
+  font-size: 18px;
   font-weight: 600;
 }
 
-.logo-box {
-  width: 16px;
-  height: 16px;
-  background: #22c55e;
-  border-radius: 4px;
-}
 
 /* LINKS */
 .nav-links {
@@ -300,6 +305,59 @@ html {
   align-items: center;
   gap: 12px;
 }
+
+.book-help-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0;
+}
+
+.book-help-btn {
+  background: #22c55e;
+  color: #020617;
+  padding: 14px 36px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.book-help-btn:hover {
+  background: #16a34a;
+  transform: translateY(-2px);
+}
+.helper-login-btn {
+  background: linear-gradient(135deg, #28a745, #218838);
+  color: #ffffff;
+  border: none;
+
+  padding: 14px 30px;
+  font-size: 16px;
+  font-weight: 600;
+
+  border-radius: 10px;
+  cursor: pointer;
+
+  white-space: nowrap;        /* keeps text on one line */
+  text-align: center;
+
+  box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
+  transition: all 0.3s ease;
+}
+
+.helper-login-btn:hover {
+  background: linear-gradient(135deg, #218838, #1e7e34);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(40, 167, 69, 0.45);
+}
+
+.helper-login-btn:active {
+  transform: translateY(0);
+}
+
+
 
 /* RESPONSIVE */
 @media (max-width: 992px) {

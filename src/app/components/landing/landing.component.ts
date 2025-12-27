@@ -69,8 +69,11 @@ export class LandingComponent implements AfterViewInit {
   this.router.navigate(['/register']);
   }
 
-  goToHelperRegister(): void {
+  goToHelper() {
     this.router.navigate(['/helper-registration']);
+  }
+  goToBookHelp(): void {
+    this.router.navigate(['/book-help']); 
   }
 
 

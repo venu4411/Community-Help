@@ -5,13 +5,13 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-helper-login',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  templateUrl: './helper-login.component.html',
+  styleUrls: ['./helper-login.component.css']
 })
-export class LoginComponent {
+export class HelperLoginComponent {
 
   formData = {
     username: '',
@@ -31,13 +31,13 @@ export class LoginComponent {
   }
 
   login() {
-    this.auth.userLogin(this.formData).subscribe({
+    this.auth.helperLogin(this.formData).subscribe({
       next: (res: any) => {
         this.auth.setUser(res.user);
         this.router.navigate(['/']);
       },
       error: () => {
-        this.error = 'Invalid username or password';
+        this.error = 'Invalid helper credentials';
       }
     });
   }

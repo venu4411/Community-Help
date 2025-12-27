@@ -7,7 +7,10 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule        // ✅ THIS FIXES ngModel
+  ],
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css']
 })
@@ -16,14 +19,14 @@ export class RegistrationComponent {
   user = {
     fullName: '',
     contact: '',
+    location: '',
     username: '',
     password: '',
-    location: '',
     role: 'Resident'
   };
 
-  isRegistered = false;
   errorMessage = '';
+  successMessage = '';
 
   constructor(
     private authService: AuthService,
@@ -33,16 +36,14 @@ export class RegistrationComponent {
   registerUser(): void {
     this.authService.registerUser(this.user).subscribe({
       next: () => {
-        this.isRegistered = true;
+        this.successMessage = 'Registration successful';
+        this.errorMessage = '';
+        setTimeout(() => this.router.navigate(['/login']), 1200);
       },
-      error: (err: any) => {
-        this.errorMessage = err?.error?.message || 'Registration failed';
+      error: () => {
+        this.errorMessage = 'Registration failed';
+        this.successMessage = '';
       }
     });
-  }
-
-
-  goToHome(): void {
-    this.router.navigate(['/']);
   }
 }

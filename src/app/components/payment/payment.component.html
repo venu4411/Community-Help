@@ -1,0 +1,88 @@
+<div class="page">
+
+  <!-- SUCCESS OVERLAY -->
+  <div class="success-overlay" *ngIf="showSuccess">
+    <div class="success-box">
+      <h2>✅ Payment Successful</h2>
+      <p>Redirecting to tracking…</p>
+    </div>
+  </div>
+
+  <div class="card glass">
+
+    <!-- HEADER -->
+    <div class="header">
+      <img class="avatar" [src]="getProfileImage()">
+      <div class="info">
+        <h3>{{ helper.fullName }}</h3>
+        <span>{{ helper.priceType }}</span>
+      </div>
+    </div>
+
+    <div class="amount">₹{{ helper.price }}</div>
+
+    <!-- MAIN METHODS -->
+    <div class="methods">
+      <button (click)="selectMethod('UPI')" [class.active]="selectedMethod==='UPI'">UPI</button>
+      <button (click)="selectMethod('Card')" [class.active]="selectedMethod==='Card'">Card</button>
+      <button (click)="selectMethod('Cash')" [class.active]="selectedMethod==='Cash'">Cash</button>
+    </div>
+
+    <!-- UPI OPTIONS -->
+    <div class="upi-grid" *ngIf="selectedMethod==='UPI'">
+      <button (click)="selectUpi('GPay')" [class.active]="selectedUpi==='GPay'">GPay</button>
+      <button (click)="selectUpi('PhonePe')" [class.active]="selectedUpi==='PhonePe'">PhonePe</button>
+      <button (click)="selectUpi('PayPal')" [class.active]="selectedUpi==='PayPal'">PayPal</button>
+      <button (click)="selectUpi('VISA')" [class.active]="selectedUpi==='VISA'">VISA</button>
+    </div>
+
+    <!-- CARD UI -->
+    <div class="card-ui" *ngIf="selectedMethod==='Card'">
+      <div class="card-visual">
+
+        <div
+          class="card-number"
+          contenteditable
+          data-placeholder="Card Number"
+          (input)="card.number = $any($event.target).innerText">
+        </div>
+
+        <div class="card-row">
+
+          <span
+            class="card-field"
+            contenteditable
+            data-placeholder="FULL NAME"
+            (input)="card.name = $any($event.target).innerText">
+          </span>
+
+          <span
+            class="card-field"
+            contenteditable
+            data-placeholder="MM/YY"
+            (input)="card.expiry = $any($event.target).innerText">
+          </span>
+
+          <span
+            class="card-field"
+            contenteditable
+            data-placeholder="CVV"
+            (input)="card.cvv = $any($event.target).innerText">
+          </span>
+
+        </div>
+
+
+      </div>
+    </div>
+
+    <!-- CASH -->
+    <p class="cash-text" *ngIf="selectedMethod==='Cash'">
+      Pay directly to helper after service
+    </p>
+
+    <button class="pay-btn" (click)="payNow()">Pay Now</button>
+    <button class="back-btn" (click)="goBack()">⬅ Back</button>
+
+  </div>
+</div>

@@ -1,91 +1,52 @@
-<div class="registration-page">
+<div class="profile-page">
+  <div class="profile-card">
+    <h2>Join as Helper</h2>
 
-  <!-- FORM -->
-  <div class="glass-card" *ngIf="!isRegistered">
+    <div class="error-msg" *ngIf="errorMessage">{{errorMessage}}</div>
+    <div class="success-msg" *ngIf="successMessage">{{successMessage}}</div>
 
-    <h3 class="text-center mb-4">Helper Registration</h3>
+    <div class="form-grid">
+      <input placeholder="Full Name" [(ngModel)]="form.fullName">
+      <input placeholder="Contact" [(ngModel)]="form.contact">
 
-    <form (ngSubmit)="registerHelper()" #helperForm="ngForm">
+      <input placeholder="Username" [(ngModel)]="form.username">
+      <input type="password" placeholder="Password" [(ngModel)]="form.password">
 
-      <div class="mb-3">
-        <label>Full Name</label>
-        <input class="form-control" required
-               [(ngModel)]="helper.fullName"
-               name="fullName">
-      </div>
+      <select [(ngModel)]="form.gender">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
 
-      <div class="mb-3">
-        <label>Contact</label>
-        <input class="form-control" required
-               [(ngModel)]="helper.contact"
-               name="contact">
-      </div>
+      <input type="number" placeholder="Age" [(ngModel)]="form.age">
 
-      <div class="mb-3">
-        <label>Username</label>
-        <input class="form-control" required
-               [(ngModel)]="helper.username"
-               name="username">
-      </div>
+      <input placeholder="Qualification" [(ngModel)]="form.qualification">
+      <input placeholder="Location" [(ngModel)]="form.location">
+    </div>
 
-      <div class="mb-3">
-        <label>Password</label>
-        <input type="password" class="form-control" required
-               [(ngModel)]="helper.password"
-               name="password">
-      </div>
+    <h4>Type of Help</h4>
+    <div class="help-grid">
+      <label *ngFor="let h of helpOptions">
+        <input type="checkbox" [(ngModel)]="h.checked"> {{h.label}}
+      </label>
+    </div>
 
-      <!-- HELP SELECTION -->
-      <div class="mb-4">
-        <label class="mb-2 d-block">Type of Help You Provide</label>
+    <input *ngIf="helpOptions[7].checked"
+           placeholder="Specify other help"
+           [(ngModel)]="otherHelp">
 
-        <div class="help-pill-group">
-          <div
-            class="help-pill"
-            *ngFor="let h of helpOptions"
-            [class.active]="helper.helps.includes(h)"
-            (click)="toggleHelp(h)">
-            {{ h }}
-          </div>
-        </div>
+    <div class="form-grid">
+      <select [(ngModel)]="form.priceType">
+        <option value="Hourly">Per Hour</option>
+        <option value="Work">Per Work</option>
+      </select>
 
-        <!-- OTHER HELP INPUT -->
-        <input
-          *ngIf="helper.helps.includes('Others')"
-          type="text"
-          class="form-control mt-3"
-          placeholder="Enter other type of help"
-          [(ngModel)]="helper.otherHelp"
-          name="otherHelp">
-      </div>
+      <input type="number" placeholder="Price" [(ngModel)]="form.price">
+    </div>
 
-      <!-- ROLE -->
-      <div class="mb-4">
-        <label>Role</label>
-        <input class="form-control" value="Helper" disabled>
-      </div>
-
-      <button class="btn btn-success w-100"
-              [disabled]="!helperForm.valid">
-        Register
-      </button>
-
-    </form>
+    <div class="btn-row">
+      <button (click)="back()">Back</button>
+      <button (click)="register()">Register</button>
+    </div>
   </div>
-
-
-    <!-- SUCCESS -->
-    <div class="glass-card success-card" *ngIf="isRegistered">
-    <div class="success-content">
-        <h3>🎉 Successfully Registered</h3>
-        <p>Your helper account has been created successfully.</p>
-
-        <button
-        class="btn btn-success mt-3"
-        (click)="goToHome()">
-        Go to Home
-        </button>
-    </div>
-    </div>
-
 </div>

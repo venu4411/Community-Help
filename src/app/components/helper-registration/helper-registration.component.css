@@ -1,120 +1,177 @@
-/* SAME BACKGROUND AS LANDING & RESIDENT */
-.registration-page {
+/* ================= PAGE ================= */
+.profile-page {
   min-height: 100vh;
-  width: 100vw;
-  padding: 80px 20px 80px;
-
-  background: radial-gradient(
-    circle at top,
-    #1f2937 0%,
-    #020617 70%
-  );
-
-  display: flex;
-  justify-content: center;
-}
-
-/* GLASS CARD */
-.glass-card {
-  width: 500px;
-  max-width: 95%;
-  padding: 26px 24px;
-
-  background: rgba(255, 255, 255, 0.32);
-  border-radius: 14px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.12);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-
-  color: #020617;
-}
-
-/* INPUTS */
-.form-control {
-  height: 42px;
-  font-size: 14px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 8px;
-  border: none;
-}
-
-.form-control:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.6);
-}
-
-/* HELP PILLS */
-.help-pill-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.help-pill {
-  padding: 8px 14px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.75);
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  user-select: none;
-}
-
-.help-pill:hover {
-  background: rgba(34, 197, 94, 0.15);
-}
-
-.help-pill.active {
-  background: #22c55e;
-  color: #020617;
-  font-weight: 600;
-}
-
-/* BUTTONS */
-.btn-success {
-  background-color: #22c55e;
-  border: none;
-}
-
-.btn-success:hover {
-  background-color: #16a34a;
-}
-
-/* SUCCESS CARD FIX */
-.success-card {
-  width: 500px;
-  max-width: 90%;
-  min-height: 200px;
-  padding: 0;
-
   display: flex;
   justify-content: center;
   align-items: center;
+
+  background: radial-gradient(circle at top, #1f2937, #020617 75%);
+  font-family: 'Inter', sans-serif;
 }
 
-/* CENTER CONTENT */
-.success-content {
+/* ================= GLASS CARD ================= */
+.profile-card {
+  width: 900px;
+  padding: 26px 32px;
+  border-radius: 22px;
+  color: #ffffff;
+
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  box-shadow:
+    0 30px 60px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+/* ================= TITLE ================= */
+.profile-card h2 {
   text-align: center;
-  padding: 10px 20px;
+  margin-bottom: 14px;
+  font-weight: 600;
 }
 
-/* SUCCESS TEXT */
-.success-content h3 {
-  color: #22c55e;
-  font-weight: 600;
+/* ================= MESSAGES ================= */
+.error-msg {
+  background: rgba(220, 38, 38, 0.25);
+  color: #fecaca;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+.success-msg {
+  background: rgba(34, 197, 94, 0.25);
+  color: #bbf7d0;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+/* ================= FORM GRID ================= */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 18px;
+}
+
+/* ================= INPUTS & SELECT ================= */
+.profile-card input,
+.profile-card select {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.profile-card input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.profile-card select option {
+  color: #000;
+}
+
+.profile-card input:focus,
+.profile-card select:focus {
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.35);
+}
+
+/* ================= TYPE OF HELP ================= */
+.profile-card h4 {
+  margin: 12px 0 6px;
+  font-weight: 500;
+}
+
+.help-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px 12px;
   margin-bottom: 10px;
 }
 
-.success-content p {
-  color: #d1d5db;
-  font-size: 14px;
-  margin-bottom: 20px;
+.help-grid label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 13px;
+
+  background: rgba(255, 255, 255, 0.1);
 }
 
-/* SUCCESS BUTTON */
-.success-content .btn-success {
-  padding: 10px 28px;
-  font-size: 14px;
-  border-radius: 999px;
+.help-grid input[type="checkbox"] {
+  transform: scale(0.95);
+  accent-color: #22c55e;
+}
+
+/* ================= OTHER HELP INPUT ================= */
+.profile-card input[placeholder="Specify other help"] {
+  margin-bottom: 10px;
+}
+
+/* ================= BUTTON ROW ================= */
+.btn-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+}
+
+/* BACK BUTTON */
+.btn-row button:first-child {
+  padding: 10px 20px;
+  border-radius: 12px;
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+}
+
+/* REGISTER BUTTON */
+.btn-row button:last-child {
+  padding: 12px 36px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #ffffff;
+  font-weight: 600;
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-row button:last-child:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 30px rgba(34, 197, 94, 0.4);
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+  .profile-card {
+    width: 94%;
+    padding: 22px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .help-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
