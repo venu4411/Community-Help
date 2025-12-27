@@ -1,5 +1,7 @@
 import express from 'express';
 import {
+  registerUser,
+  registerHelper,
   loginUser,
   loginHelper,
   updateProfile,
@@ -8,6 +10,8 @@ import {
 } from '../controllers/auth.controller';
 
 const router = express.Router();
+router.post('/register', registerUser);
+router.post('/helper/register', registerHelper);
 
 router.post('/login/user', loginUser);
 router.post('/login/helper', loginHelper);

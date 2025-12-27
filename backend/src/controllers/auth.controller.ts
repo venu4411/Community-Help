@@ -1,5 +1,168 @@
 import { Request, Response } from 'express';
 import { db } from '../db';
+import * as bcrypt from 'bcrypt';
+
+
+/* ================= USER REGISTRATION ================= */
+export const registerUser = async (req: Request, res: Response) => {
+
+  const {
+    fullName,
+    contact,
+    location,
+    username,
+    password,
+    role
+  } = req.body;
+
+  if (!fullName || !contact || !location || !username || !password) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
+
+  try {
+    // 🔍 Check existing user
+    db.query(
+      'SELECT id FROM users WHERE username = ?',
+      [username],
+      async (err, result: any[]) => {
+
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ message: 'Database error' });
+        }
+
+        if (result.length > 0) {
+          return res.status(409).json({ message: 'Username already exists' });
+        }
+
+        // 🔐 Hash password using bcrypt
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+        // 💾 Insert user
+        db.query(
+          `INSERT INTO users 
+           (full_name, contact, location, username, password, role)
+           VALUES (?, ?, ?, ?, ?, ?)`,
+          [
+            fullName,
+            contact,
+            location,
+            username,
+            hashedPassword,
+            role || 'Resident'
+          ],
+          (insertErr) => {
+
+            if (insertErr) {
+              console.error(insertErr);
+              return res.status(500).json({ message: 'Registration failed' });
+            }
+
+            res.status(201).json({
+              message: 'User registered successfully'
+            });
+          }
+        );
+      }
+    );
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
+/* ================= HELPER REGISTRATION ================= */
+export const registerHelper = async (req: Request, res: Response) => {
+
+  const {
+    fullName,
+    contact,
+    username,
+    password,
+    gender,
+    age,
+    qualification,
+    location,
+    helpType,
+    priceType,
+    price
+  } = req.body;
+
+  if (
+    !fullName ||
+    !contact ||
+    !username ||
+    !password ||
+    !gender ||
+    !age ||
+    !qualification ||
+    !location ||
+    !helpType ||
+    !priceType ||
+    !price
+  ) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
+
+  try {
+    // 🔍 Check username
+    db.query(
+      'SELECT id FROM heplers WHERE username = ?',
+      [username],
+      async (err, result: any[]) => {
+
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ message: 'Database error' });
+        }
+
+        if (result.length > 0) {
+          return res.status(409).json({ message: 'Username already exists' });
+        }
+
+        // 🔐 Hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // 💾 Insert helper
+        db.query(
+          `INSERT INTO heplers
+           (full_name, username, password, contact, gender, age,
+            qualification, location, help_type, price_type, price, role)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Helper')`,
+          [
+            fullName,
+            username,
+            hashedPassword,
+            contact,
+            gender,
+            age,
+            qualification,
+            location,
+            helpType,
+            priceType,
+            price
+          ],
+          (insertErr) => {
+
+            if (insertErr) {
+              console.error(insertErr);
+              return res.status(500).json({ message: 'Registration failed' });
+            }
+
+            res.status(201).json({
+              message: 'Helper registered successfully'
+            });
+          }
+        );
+      }
+    );
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
 
 /* ================= HELPER LOGIN ================= */
 export const loginHelper = (req: Request, res: Response) => {
@@ -133,9 +296,10 @@ export const getHelpersByType = (req: Request, res: Response) => {
 
 
 /* ================= PAYMENT + BOOKING ================= */
+/* ================= PAYMENT + BOOKING ================= */
 export const payAndBook = (req: Request, res: Response) => {
 
-  console.log('PAYLOAD RECEIVED:', req.body);
+  console.log('🔥 PAYLOAD:', req.body);
 
   const {
     userId,
@@ -162,28 +326,29 @@ export const payAndBook = (req: Request, res: Response) => {
   }
 
   const calendar = new Date(bookingDate).toISOString().split('T')[0];
+  const time = bookingTime;
 
   /* 1️⃣ GET USERNAME */
   db.query(
-    `SELECT username FROM users WHERE id = ?`,
+    'SELECT username FROM users WHERE id = ?',
     [userId],
     (uErr: any, uRes: any[]) => {
 
       if (uErr || uRes.length === 0) {
-        console.error('❌ USER FETCH ERROR', uErr);
+        console.error('❌ USER ERROR:', uErr);
         return res.status(500).json({ message: 'User fetch failed' });
       }
 
       const username = uRes[0].username;
 
-      /* 2️⃣ GET HELPER NAME */
+      /* 2️⃣ GET HELPER NAME (FROM heplers ✅) */
       db.query(
-        `SELECT full_name FROM heplers WHERE id = ?`,
+        'SELECT full_name FROM heplers WHERE id = ?',
         [helperId],
         (hErr: any, hRes: any[]) => {
 
           if (hErr || hRes.length === 0) {
-            console.error('❌ HELPER FETCH ERROR', hErr);
+            console.error('❌ HELPER ERROR:', hErr);
             return res.status(500).json({ message: 'Helper fetch failed' });
           }
 
@@ -199,20 +364,20 @@ export const payAndBook = (req: Request, res: Response) => {
               helperId,
               serviceType,
               calendar,
-              bookingTime,
+              time,
               location,
               price
             ],
             (bErr: any, bRes: any) => {
 
               if (bErr) {
-                console.error('❌ BOOKING ERROR', bErr);
+                console.error('❌ BOOKING ERROR:', bErr);
                 return res.status(500).json({ message: 'Booking failed' });
               }
 
               const bookingId = bRes.insertId;
 
-              /* 4️⃣ INSERT PAYMENT (FULL DATA) */
+              /* 4️⃣ INSERT PAYMENT (WITH booking_id ✅) */
               db.query(
                 `INSERT INTO payments
                  (booking_id, username, helpername, calendar, time, location,
@@ -223,7 +388,7 @@ export const payAndBook = (req: Request, res: Response) => {
                   username,
                   helpername,
                   calendar,
-                  bookingTime,
+                  time,
                   location,
                   paymentMethod,
                   price
@@ -231,7 +396,7 @@ export const payAndBook = (req: Request, res: Response) => {
                 (pErr: any) => {
 
                   if (pErr) {
-                    console.error('❌ PAYMENT ERROR', pErr);
+                    console.error('❌ PAYMENT ERROR:', pErr);
                     return res.status(500).json({ message: 'Payment failed' });
                   }
 
@@ -248,4 +413,10 @@ export const payAndBook = (req: Request, res: Response) => {
     }
   );
 };
+
+
+
+
+
+
 
