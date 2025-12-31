@@ -6,10 +6,10 @@ import { CommonModule } from '@angular/common';
   selector: 'app-tracking',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './tracking.component.html',
-  styleUrls: ['./tracking.component.css']
+  templateUrl: './payment-task-tracking.component.html',
+  styleUrls: ['./payment-task-tracking.component.css']
 })
-export class TrackingComponent implements OnInit {
+export class PaymentTaskTrackingComponent  implements OnInit {
 
   helper: any;
   booking: any;

@@ -1,13 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';   // ✅ REQUIRED
+import { Router, RouterModule } from '@angular/router'; // ✅ ADD RouterModule
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   standalone: true,
   selector: 'app-profile',
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule   // ✅ REQUIRED for routerLink
+  ],
   templateUrl: './profile-details.component.html',
   styleUrls: ['./profile-details.component.css']
 })
@@ -18,7 +22,6 @@ export class ProfileDetailsComponent implements OnInit {
   showPassword = false;
   successMessage = '';
 
-  // ✅ Router MUST be injected
   constructor(
     private auth: AuthService,
     private router: Router
@@ -50,20 +53,18 @@ export class ProfileDetailsComponent implements OnInit {
       payload.price = this.user.price;
     }
 
-    this.auth.updateUser(this.user.id, this.user.role, payload)
-      .subscribe({
-        next: (res: any) => {
-          this.successMessage = 'Successfully updated';
-          this.editMode = false;
-          this.auth.setUser(this.user);
-        },
-        error: () => {
-          this.successMessage = 'Update failed';
-        }
-      });
+    this.auth.updateUser(this.user.id, this.user.role, payload).subscribe({
+      next: () => {
+        this.successMessage = 'Successfully updated';
+        this.editMode = false;
+        this.auth.setUser(this.user);
+      },
+      error: () => {
+        this.successMessage = 'Update failed';
+      }
+    });
   }
 
-  // ✅ THIS IS YOUR LINE 62 — NOW IT WORKS
   goBack() {
     this.router.navigate(['/']);
   }

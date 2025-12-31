@@ -101,7 +101,7 @@ export class PaymentComponent {
           this.showSuccess = true;
 
           setTimeout(() => {
-            this.router.navigate(['/tracking'], {
+            this.router.navigate(['/payment-task-tracking'], {
               state: {
                 helper: this.helper,
                 booking: this.booking

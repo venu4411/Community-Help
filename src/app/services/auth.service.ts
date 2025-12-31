@@ -67,6 +67,16 @@ export class AuthService {
   getHelpersByType(type: string) {
     return this.http.get<any[]>(`${this.API}/helpers/${type}`);
   }
+
+  getTasksByUsername(username: string) {
+    return this.http.get<any[]>(
+      `${this.API}/payments/user/${username}`
+    );
+  }
+  
+  adminLogin(data: { username: string; password: string }) {
+    return this.http.post(`${this.API}/admin/login`, data);
+  }
   
   
 

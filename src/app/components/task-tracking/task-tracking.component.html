@@ -1,0 +1,94 @@
+<div class="page">
+
+  <!-- SIDE MENU -->
+  <aside class="side-menu">
+    <h3 class="menu-title">MENU</h3>
+
+    <button class="menu-item" routerLink="/profile">🏠 Dashboard</button>
+
+    <button class="menu-item active" routerLink="/tracking">
+      📝 Tasks
+    </button>
+
+    <button class="menu-item">📅 Calendar</button>
+    <button class="menu-item">📊 Analytics</button>
+    <button class="menu-item">👥 Team</button>
+
+    <button class="menu-item back-btn" (click)="goBack()">⬅ Back</button>
+  </aside>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <h1 class="page-title">Task Tracking</h1>
+
+    <p *ngIf="loading">Loading...</p>
+
+    <p *ngIf="!loading && tasks.length === 0" class="empty">
+      No tasks found
+    </p>
+
+    <!-- TASK GRID -->
+    <div class="task-grid" *ngIf="!loading && tasks.length">
+
+      <div class="profile-card task-card"
+           *ngFor="let task of tasks">
+
+        <h2 class="task-title">{{ task.helpername }}</h2>
+
+        <div class="task-info">
+          <p><span>Date</span>{{ formatDate(task.calendar) }}</p>
+          <p><span>Time</span>{{ task.time }}</p>
+          <p><span>Location</span>{{ task.location }}</p>
+          <p><span>Payment</span>{{ task.payment_method }}</p>
+          <p><span>Amount</span>₹{{ task.amount }}</p>
+          <p>
+            <span>Status</span>
+            <b [class.done]="task.task_status === 'completed'">
+              {{ task.task_status }}
+            </b>
+          </p>
+        </div>
+
+        <!-- USER ACTIONS -->
+        <div *ngIf="role === 'user'">
+
+          <!-- COMPLETE -->
+          <button
+            class="complete-btn"
+            *ngIf="task.task_status === 'pending'"
+            (click)="completeTask(task)">
+            Slide to Complete →
+          </button>
+
+          <!-- REVIEW -->
+          <div *ngIf="task.task_status === 'completed'">
+
+            <div class="stars">
+              <span *ngFor="let s of [1,2,3,4,5]"
+                    (click)="rate(task, s)"
+                    [class.active]="s <= task.userRating">★</span>
+            </div>
+
+            <textarea
+              [(ngModel)]="task.userReview"
+              placeholder="Write your review..."
+              [disabled]="task.submitted">
+            </textarea>
+
+            <button
+              class="submit-btn"
+              (click)="submitReview(task)"
+              [disabled]="task.submitted">
+              {{ task.submitted ? 'Review Submitted ✔' : 'Submit Review' }}
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

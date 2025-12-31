@@ -9,7 +9,10 @@ import { BookHelpComponent } from './components/book-help/book-help.component';
 import { BookWorkComponent } from './components/book-work/book-work.component';
 import { BookNowComponent } from './components/book-now/book-now.component';
 import { PaymentComponent } from './components/payment/payment.component';
-import { TrackingComponent } from './components/tracking/tracking.component';
+import { TaskTrackingComponent } from './components/task-tracking/task-tracking.component';
+import { PaymentTaskTrackingComponent } from './components/payment-task-tracking/payment-task-tracking.component';
+
+
 
 export const routes: Routes = [
   { path: '', component: LandingComponent },
@@ -22,7 +25,12 @@ export const routes: Routes = [
   { path: 'book-work/:type', component: BookWorkComponent },
   { path: 'book-now', component: BookNowComponent },
   { path: 'payment', component: PaymentComponent },
-  { path: 'tracking', component: TrackingComponent },
+  { path: 'tracking', component: TaskTrackingComponent },
+  { path: 'payment-task-tracking', component: PaymentTaskTrackingComponent },
+  
+
+  { path: '**', redirectTo: '' } 
+
 
 
 

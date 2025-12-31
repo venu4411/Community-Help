@@ -1,35 +1,43 @@
 <div class="auth-container">
   <div class="auth-card">
 
-    <h2>Resident Login</h2>
+    <h2>{{ loginAsAdmin ? 'Admin Login' : 'Resident Login' }}</h2>
 
     <div class="error" *ngIf="error">{{ error }}</div>
 
-    <!-- Username -->
+    <!-- USERNAME -->
     <input
       type="text"
       placeholder="Username"
       [(ngModel)]="formData.username">
 
-    <!-- Password -->
+    <!-- PASSWORD -->
     <div class="password-wrapper">
       <input
-        id="password-field"
         [type]="showPassword ? 'text' : 'password'"
-        class="form-control"
         placeholder="Password"
         [(ngModel)]="formData.password">
 
       <span
-        class="field-icon toggle-password"
+        class="field-icon"
         (click)="togglePassword()">
         {{ showPassword ? '🙈' : '👁' }}
       </span>
     </div>
 
-    <input value="Resident" disabled>
+    <!-- ROLE DISPLAY -->
+    <input
+      [value]="loginAsAdmin ? 'Admin' : 'Resident'"
+      disabled>
 
     <button (click)="login()">Login</button>
+
+    <!-- SWITCH -->
+    <p class="switch">
+      <span (click)="toggleLoginType()">
+        {{ loginAsAdmin ? 'Login as Resident' : 'Login as Admin' }}
+      </span>
+    </p>
 
   </div>
 </div>

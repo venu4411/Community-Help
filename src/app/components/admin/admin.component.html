@@ -1,0 +1,41 @@
+<div class="admin-page">
+
+  <h2 class="page-title">🛠 Admin Dashboard</h2>
+
+  <p *ngIf="loading">Loading...</p>
+
+  <!-- USERS -->
+  <h3 class="section-title">Users</h3>
+  <div class="grid">
+    <div class="card" *ngFor="let u of users">
+      <h4>{{ u.username }}</h4>
+
+      <input [(ngModel)]="u.fullName" placeholder="Full Name">
+      <input [(ngModel)]="u.contact" placeholder="Contact">
+      <input [(ngModel)]="u.location" placeholder="Location">
+
+      <button (click)="saveUser(u)">Save</button>
+    </div>
+  </div>
+
+  <!-- HELPERS -->
+  <h3 class="section-title">Helpers</h3>
+  <div class="grid">
+    <div class="card" *ngFor="let h of helpers">
+      <h4>{{ h.full_name }}</h4>
+
+      <input [(ngModel)]="h.contact" placeholder="Contact">
+      <input [(ngModel)]="h.location" placeholder="Location">
+      <input [(ngModel)]="h.qualification" placeholder="Qualification">
+      <input [(ngModel)]="h.helpType" placeholder="Help Type">
+
+      <div class="row">
+        <input [(ngModel)]="h.priceType" placeholder="Price Type">
+        <input type="number" [(ngModel)]="h.price" placeholder="Price">
+      </div>
+
+      <button (click)="saveHelper(h)">Save</button>
+    </div>
+  </div>
+
+</div>
