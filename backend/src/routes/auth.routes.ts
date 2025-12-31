@@ -6,7 +6,16 @@ import {
   loginHelper,
   updateProfile,
   getHelpersByType,
-  payAndBook
+  payAndBook,
+
+  
+  getTasksByUser,
+  getTasksByHelper,
+  completeTask,
+  rateHelper,
+
+  adminLogin,
+
 } from '../controllers/auth.controller';
 
 const router = express.Router();
@@ -21,5 +30,16 @@ router.put('/update/:role/:id', updateProfile);
 router.get('/helpers/:type', getHelpersByType);
 
 router.post('/pay-and-book', payAndBook);
+
+
+router.get('/task/user/:username', getTasksByUser);
+router.get('/task/helper/:helpername', getTasksByHelper);
+router.post('/task/complete', completeTask);
+router.post('/rate-helper', rateHelper);
+
+router.post('/admin/login', adminLogin);
+
+
+
 
 export default router;

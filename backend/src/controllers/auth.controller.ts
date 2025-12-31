@@ -414,9 +414,116 @@ export const payAndBook = (req: Request, res: Response) => {
   );
 };
 
+/* ================= USER TASKS ================= */
+export const getTasksByUser = (req: Request, res: Response) => {
+  const { username } = req.params;
+
+  const sql = `
+    SELECT *
+    FROM payments
+    WHERE username = ?
+    ORDER BY calendar DESC, time DESC
+  `;
+
+  db.query(sql, [username], (err, rows) => {
+    if (err) {
+      console.error('USER TASK ERROR', err);
+      return res.status(500).json({ message: 'Failed to load user tasks' });
+    }
+    res.json(rows);
+  });
+};
+
+/* ================= HELPER TASKS ================= */
+export const getTasksByHelper = (req: Request, res: Response) => {
+  const { helpername } = req.params;
+
+  const sql = `
+    SELECT *
+    FROM payments
+    WHERE helpername = ?
+    ORDER BY calendar DESC, time DESC
+  `;
+
+  db.query(sql, [helpername], (err, rows) => {
+    if (err) {
+      console.error('HELPER TASK ERROR', err);
+      return res.status(500).json({ message: 'Failed to load helper tasks' });
+    }
+    res.json(rows);
+  });
+};
 
 
+/* ================= COMPLETE TASK (USER ONLY) ================= */
+export const completeTask = (req: Request, res: Response) => {
+  const { paymentId } = req.body;
 
+  const sql = `
+    UPDATE payments
+    SET task_status = 'completed'
+    WHERE id = ?
+  `;
 
+  db.query(sql, [paymentId], err => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: 'Failed to complete task' });
+    }
+    res.json({ message: 'Task completed' });
+  });
+};
 
+/* ================= RATE HELPER ================= */
+export const rateHelper = (req: Request, res: Response) => {
+  const { helpername, rating, review } = req.body;
 
+  if (!helpername || rating < 1 || rating > 5) {
+    return res.status(400).json({ message: 'Invalid rating' });
+  }
+
+  const sql = `
+    UPDATE heplers
+    SET rating = ?, review = ?
+    WHERE full_name = ?
+  `;
+
+  db.query(sql, [rating, review || '', helpername], err => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: 'Rating failed' });
+    }
+    res.json({ message: 'Rating saved' });
+  });
+};
+
+/* ================= ADMIN LOGIN ================= */
+export const adminLogin = (req: Request, res: Response) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ message: 'Missing credentials' });
+  }
+
+  const sql = `
+    SELECT id, username
+    FROM admins
+    WHERE username = ? AND password = ?
+    LIMIT 1
+  `;
+
+  db.query(sql, [username, password], (err, rows: any[]) => {
+    if (err) {
+      console.error('❌ ADMIN LOGIN ERROR:', err);
+      return res.status(500).json({ message: 'Server error' });
+    }
+
+    if (rows.length === 0) {
+      return res.status(401).json({ message: 'Invalid admin credentials' });
+    }
+
+    res.json({
+      admin: rows[0]
+    });
+  });
+};
