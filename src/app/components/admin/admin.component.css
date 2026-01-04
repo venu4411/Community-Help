@@ -1,73 +1,140 @@
+/* PAGE */
 .admin-page {
   min-height: 100vh;
-  padding: 40px;
+  padding: 80px 40px;
   background: radial-gradient(circle at top, #0f172a, #020617);
-  color: #fff;
+  color: #ffffff;
+  font-family: Inter, system-ui, sans-serif;
+  text-align: center;
 }
 
-.page-title {
-  margin-bottom: 30px;
-  font-size: 26px;
+/* HEADER */
+.admin-header {
+  margin-bottom: 50px;
+  animation: fadeDown 0.8s ease;
 }
 
-.section-title {
-  margin: 30px 0 16px;
-  color: #22c55e;
+.admin-header h1 {
+  font-size: 36px;
+  font-weight: 700;
 }
 
-/* GRID */
-.grid {
+.admin-header p {
+  opacity: 0.7;
+  margin-top: 8px;
+}
+
+/* 🔥 SINGLE ROW GRID */
+.card-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(3, 1fr); /* ✅ SINGLE ROW */
+  gap: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* CARD */
-.card {
-  padding: 22px;
-  border-radius: 22px;
-  background: rgba(255,255,255,0.08);
+/* GLASS CARD */
+.glass-card {
+  padding: 40px 30px;
+  border-radius: 26px;
+  cursor: pointer;
+
+  background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(18px);
-  box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 30px 60px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  animation: fadeUp 0.9s ease;
 }
 
-.card h4 {
-  margin-bottom: 12px;
+/* HOVER EFFECT */
+.glass-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow:
+    0 40px 80px rgba(34, 197, 94, 0.35),
+    inset 0 0 0 1px rgba(34, 197, 94, 0.4);
+}
+
+/* ICON */
+.icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+/* TITLE */
+.glass-card h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+/* TEXT */
+.glass-card p {
+  font-size: 14px;
+  opacity: 0.7;
+  margin-bottom: 20px;
+}
+
+/* ACTION */
+.action {
+  font-weight: 600;
   color: #22c55e;
 }
 
-/* INPUT */
-input {
-  width: 100%;
-  margin-bottom: 10px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: none;
-  background: #1f2937;
-  color: white;
-}
-
-.row {
-  display: flex;
-  gap: 10px;
-}
-
-/* BUTTON */
-button {
-  width: 100%;
-  padding: 12px;
-  border-radius: 18px;
-  border: none;
+/* BACK BUTTON */
+.back-btn {
+  margin-top: 60px;
+  padding: 12px 34px;
+  border-radius: 30px;
+  border: 1px solid #22c55e;
+  background: transparent;
+  color: #22c55e;
   cursor: pointer;
-  background: linear-gradient(135deg,#22c55e,#16a34a);
-  color: white;
   font-weight: 600;
+  transition: all 0.3s ease;
 }
 
-/* RESPONSIVE */
-@media (max-width: 1100px) {
-  .grid { grid-template-columns: repeat(2,1fr); }
+.back-btn:hover {
+  background: #22c55e;
+  color: #020617;
 }
-@media (max-width: 768px) {
-  .grid { grid-template-columns: 1fr; }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 📱 RESPONSIVE */
+@media (max-width: 1024px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
 }

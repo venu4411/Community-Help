@@ -1,0 +1,60 @@
+<div class="admin-page">
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <button class="back-btn" (click)="goBack()">← Back</button>
+  </div>
+
+  <h1 class="title">Manage Helpers</h1>
+  <p class="subtitle">Edit and update helper information</p>
+
+  <div class="success" *ngIf="message">{{ message }}</div>
+
+  <!-- GRID -->
+  <div class="helpers-grid">
+    <div class="helper-card" *ngFor="let h of helpers">
+      <div class="avatar">🧑‍🔧</div>
+      <h3>{{ h.full_name }}</h3>
+      <p>{{ h.help_type || '—' }}</p>
+      <button class="edit-btn" (click)="editHelper(h)">Edit Helper</button>
+    </div>
+  </div>
+
+  <!-- EDIT MODAL -->
+  <div class="overlay" *ngIf="showEdit">
+    <div class="edit-modal">
+
+      <h2>Edit Helper</h2>
+
+      <div class="form-grid">
+
+        <!-- LEFT COLUMN -->
+        <div class="col">
+          <input [(ngModel)]="selectedHelper.full_name" placeholder="Full Name">
+          <input [(ngModel)]="selectedHelper.username" placeholder="Username">
+          <input [(ngModel)]="selectedHelper.contact" placeholder="Contact">
+          <input [(ngModel)]="selectedHelper.location" placeholder="Location">
+          <input [(ngModel)]="selectedHelper.gender" placeholder="Gender">
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="col">
+          <input type="number" [(ngModel)]="selectedHelper.age" placeholder="Age">
+          <input [(ngModel)]="selectedHelper.qualification" placeholder="Qualification">
+          <input [(ngModel)]="selectedHelper.help_type" placeholder="Help Type">
+          <input type="number" [(ngModel)]="selectedHelper.price" placeholder="Price">
+        </div>
+
+      </div>
+
+      <textarea [(ngModel)]="selectedHelper.review" placeholder="Review"></textarea>
+
+      <div class="actions">
+        <button class="save-btn" (click)="saveChanges()">Save</button>
+        <button class="cancel-btn" (click)="cancel()">Cancel</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

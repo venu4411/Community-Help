@@ -1,0 +1,56 @@
+<div class="admin-page">
+  <div class="top-bar">
+     <button class="back-btn" (click)="goBack()">← Back</button>
+  </div>
+ 
+  <h1 class="title">Manage Users</h1>
+  <p class="subtitle">Edit and update user information</p>
+
+  <div class="success" *ngIf="message">{{ message }}</div>
+
+  <!-- GRID -->
+  <div class="helpers-grid">
+    <div class="helper-card" *ngFor="let u of users">
+      <div class="avatar">🧑</div>
+      <h3>{{ u.full_name }}</h3>
+      <p>{{ u.role }}</p>
+      <button class="edit-btn" (click)="editUser(u)">Edit User</button>
+    </div>
+  </div>
+
+  <!-- EDIT MODAL -->
+  <div class="overlay" *ngIf="showEdit">
+    <div class="edit-modal">
+
+      <h2>Edit User</h2>
+
+      <div class="form-grid">
+
+        <div class="col">
+          <input [(ngModel)]="selectedUser.full_name" placeholder="Full Name">
+          <input [(ngModel)]="selectedUser.username" placeholder="Username">
+          <input [(ngModel)]="selectedUser.contact" placeholder="Contact">
+        </div>
+
+        <div class="col">
+          <input [(ngModel)]="selectedUser.location" placeholder="Location">
+          <input [(ngModel)]="selectedUser.gender" placeholder="Gender">
+          <input [(ngModel)]="selectedUser.role" placeholder="Role">
+        </div>
+
+      </div>
+
+      <input
+        type="password"
+        disabled
+        placeholder="Password (not editable)">
+
+      <div class="actions">
+        <button class="save-btn" (click)="saveChanges()">Save</button>
+        <button class="cancel-btn" (click)="cancel()">Cancel</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

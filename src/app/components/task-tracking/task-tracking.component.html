@@ -4,15 +4,43 @@
   <aside class="side-menu">
     <h3 class="menu-title">MENU</h3>
 
-    <button class="menu-item" routerLink="/profile">🏠 Dashboard</button>
+    <button
+      class="menu-item"
+      routerLink="/profile"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }">
+      🏠 Dashboard
+    </button>
 
-    <button class="menu-item active" routerLink="/tracking">
+    <button
+      *ngIf="role === 'user'"
+      class="menu-item"
+      routerLink="/tracking"
+      routerLinkActive="active">
       📝 Tasks
     </button>
 
-    <button class="menu-item">📅 Calendar</button>
-    <button class="menu-item">📊 Analytics</button>
-    <button class="menu-item">👥 Team</button>
+    <button
+      class="menu-item"
+      routerLink="/calendar"
+      routerLinkActive="active">
+      📅 Calendar
+    </button>
+
+    <button
+      *ngIf="role === 'helper'"
+      class="menu-item"
+      routerLink="/helper/requests"
+      routerLinkActive="active">
+      📊 Task Request
+    </button>
+        <!-- TEAM -->
+    <button
+      class="menu-item"
+      routerLink="/team"
+      routerLinkActive="active">
+      👥 Chat
+    </button>
 
     <button class="menu-item back-btn" (click)="goBack()">⬅ Back</button>
   </aside>
@@ -31,8 +59,7 @@
     <!-- TASK GRID -->
     <div class="task-grid" *ngIf="!loading && tasks.length">
 
-      <div class="profile-card task-card"
-           *ngFor="let task of tasks">
+      <div class="profile-card task-card" *ngFor="let task of tasks">
 
         <h2 class="task-title">{{ task.helpername }}</h2>
 
@@ -53,29 +80,36 @@
         <!-- USER ACTIONS -->
         <div *ngIf="role === 'user'">
 
-          <!-- COMPLETE -->
+          <!-- COMPLETE (ONLY WHEN ACCEPTED) -->
           <button
             class="complete-btn"
-            *ngIf="task.task_status === 'pending'"
+            *ngIf="task.task_status === 'accepted'"
             (click)="completeTask(task)">
             Slide to Complete →
           </button>
 
-          <!-- REVIEW -->
+          <!-- REVIEW (ONLY WHEN COMPLETED) -->
           <div *ngIf="task.task_status === 'completed'">
 
+            <!-- STAR RATING -->
             <div class="stars">
-              <span *ngFor="let s of [1,2,3,4,5]"
-                    (click)="rate(task, s)"
-                    [class.active]="s <= task.userRating">★</span>
+              <span
+                *ngFor="let s of [1,2,3,4,5]"
+                (click)="setRating(task, s)"
+                [class.active]="s <= task.userRating"
+                [class.disabled]="task.submitted">
+                ★
+              </span>
             </div>
 
+            <!-- REVIEW TEXT -->
             <textarea
               [(ngModel)]="task.userReview"
               placeholder="Write your review..."
               [disabled]="task.submitted">
             </textarea>
 
+            <!-- SUBMIT -->
             <button
               class="submit-btn"
               (click)="submitReview(task)"
@@ -84,7 +118,6 @@
             </button>
 
           </div>
-
         </div>
 
       </div>

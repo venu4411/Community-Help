@@ -1,0 +1,80 @@
+<div class="page">
+
+  <!-- SIDE MENU -->
+  <aside class="side-menu">
+    <h3 class="menu-title">MENU</h3>
+
+    <button
+      class="menu-item"
+      routerLink="/profile"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }">
+      🏠 Dashboard
+    </button>
+
+    <button
+      *ngIf="role === 'user'"
+      class="menu-item"
+      routerLink="/tracking"
+      routerLinkActive="active">
+      📝 Tasks
+    </button>
+
+    <button
+      class="menu-item"
+      routerLink="/calendar"
+      routerLinkActive="active">
+      📅 Calendar
+    </button>
+
+    <button
+      *ngIf="role === 'helper'"
+      class="menu-item"
+      routerLink="/helper/requests"
+      routerLinkActive="active">
+      📊 Task Request
+    </button>
+
+    <button class="menu-item" routerLink="/chat">👥 Chat</button>
+
+    <button class="menu-item back-btn" (click)="goBack()">⬅ Back</button>
+  </aside>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <h1 class="page-title">
+      {{ role === 'helper' ? 'Assigned Schedule' : 'My Bookings' }}
+    </h1>
+
+    <p *ngIf="loading">Loading...</p>
+
+    <p *ngIf="!loading && schedules.length === 0" class="empty">
+      No schedules found
+    </p>
+
+    <!-- GRID -->
+    <div class="task-grid" *ngIf="!loading && schedules.length">
+
+      <div class="profile-card" *ngFor="let s of schedules">
+
+        <h2 class="task-title">
+          {{ role === 'helper' ? s.username : s.helpername }}
+        </h2>
+
+        <div class="task-info">
+          <p><span>Date</span>{{ formatDate(s.calendar) }}</p>
+          <p><span>Time</span>{{ s.time }}</p>
+          <p><span>Location</span>{{ s.location }}</p>
+          <p><span>Status</span>
+            <b [class.done]="s.task_status === 'completed'">
+              {{ s.task_status }}
+            </b>
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

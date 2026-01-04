@@ -1,10 +1,68 @@
-<div class="container mt-4">
-  <div class="card p-3">
-    <h4>Chat</h4>
-    <div class="border p-2 mb-3">Resident: Hello</div>
-    <div class="border p-2 mb-3">Helper: On my way</div>
+  <!-- SIDE MENU -->
+  <aside class="side-menu">
+    <h3 class="menu-title">MENU</h3>
 
-    <input class="form-control mb-2" placeholder="Type message">
-    <button class="btn btn-primary">Send</button>
+    <button class="menu-item active">🏠 Dashboard</button>
+
+    <!-- USER (Resident) -->
+    <button
+      *ngIf="user?.role?.toLowerCase() === 'resident'"
+      class="menu-item"
+      routerLink="/tracking"
+      routerLinkActive="active">
+      📝 Tasks
+    </button>
+
+    <button
+      class="menu-item"
+      routerLink="/calendar"
+      routerLinkActive="active">
+      📅 Calendar
+    </button>
+
+
+    <!-- HELPER -->
+    <button
+      *ngIf="user?.role?.toLowerCase() === 'helper'"
+      class="menu-item"
+      routerLink="/helper/requests"
+      routerLinkActive="active">
+      📊 Task Request
+    </button>
+
+    <button class="menu-item">👥 Chat</button>
+
+    <button class="menu-item back-btn" (click)="goBack()">⬅ Back</button>
+  </aside>
+<div class="chat-page">
+
+  <div class="chat-header">
+    <input
+      [(ngModel)]="partner"
+      placeholder="Enter username"
+    />
+    <button (click)="loadChat()">Start Chat</button>
   </div>
+
+  <div class="chat-box">
+
+    <div
+      class="msg"
+      *ngFor="let m of messages"
+      [class.me]="m.sender === user.username">
+
+      {{ m.message }}
+    </div>
+
+  </div>
+
+  <div class="chat-input">
+    <input
+      [(ngModel)]="message"
+      placeholder="Type message..."
+      (keyup.enter)="send()"
+    />
+    <button (click)="send()">Send</button>
+  </div>
+
 </div>

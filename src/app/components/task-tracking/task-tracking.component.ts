@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-tracking',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './task-tracking.component.html',
   styleUrls: ['./task-tracking.component.css']
 })
@@ -29,23 +29,22 @@ export class TaskTrackingComponent implements OnInit {
     this.user = this.auth.getUser();
 
     if (!this.user) {
-      alert('Login required');
       this.router.navigate(['/login']);
       return;
     }
 
-    // normalize role
-    const role = (this.user.role || '').toLowerCase();
-    this.role = role === 'helper' ? 'helper' : 'user';
+    this.role = (this.user.role || '').toLowerCase() === 'helper'
+      ? 'helper'
+      : 'user';
 
     this.loadTasks();
   }
 
   /* ================= LOAD TASKS ================= */
-  loadTasks() {
+  loadTasks(): void {
     this.loading = true;
 
-    // -------- USER TASKS --------
+    // USER TASKS
     if (this.role === 'user') {
       this.http.get<any[]>(
         `http://localhost:3000/api/task/user/${this.user.username}`
@@ -59,15 +58,14 @@ export class TaskTrackingComponent implements OnInit {
           }));
           this.loading = false;
         },
-        error: err => {
-          console.error(err);
+        error: () => {
           this.loading = false;
-          alert('Failed to load user tasks');
+          alert('Failed to load tasks');
         }
       });
     }
 
-    // -------- HELPER TASKS --------
+    // HELPER TASKS
     if (this.role === 'helper') {
       this.http.get<any[]>(
         `http://localhost:3000/api/task/helper/${this.user.fullName}`
@@ -76,8 +74,7 @@ export class TaskTrackingComponent implements OnInit {
           this.tasks = res;
           this.loading = false;
         },
-        error: err => {
-          console.error(err);
+        error: () => {
           this.loading = false;
           alert('Failed to load helper tasks');
         }
@@ -87,12 +84,11 @@ export class TaskTrackingComponent implements OnInit {
 
   /* ================= FORMAT DATE ================= */
   formatDate(date: string): string {
-    if (!date) return '-';
-    return new Date(date).toLocaleDateString('en-IN');
+    return date ? new Date(date).toLocaleDateString('en-IN') : '-';
   }
 
-  /* ================= COMPLETE TASK (USER ONLY) ================= */
-  completeTask(task: any) {
+  /* ================= COMPLETE TASK ================= */
+  completeTask(task: any): void {
     if (this.role !== 'user') return;
 
     this.http.post(
@@ -102,25 +98,20 @@ export class TaskTrackingComponent implements OnInit {
       next: () => {
         task.task_status = 'completed';
       },
-      error: err => {
-        console.error(err);
-        alert('Failed to complete task');
-      }
+      error: () => alert('Failed to complete task')
     });
   }
 
   /* ================= STAR RATING ================= */
-  rate(task: any, star: number) {
+  setRating(task: any, rating: number): void {
     if (task.submitted) return;
-    task.userRating = star;
+    task.userRating = rating;
   }
 
   /* ================= SUBMIT REVIEW ================= */
-  submitReview(task: any) {
-    if (task.submitted || this.role !== 'user') return;
-
-    if (!task.userRating) {
-      alert('Please select rating');
+  submitReview(task: any): void {
+    if (task.submitted || !task.userRating) {
+      alert('Please select a rating');
       return;
     }
 
@@ -134,17 +125,14 @@ export class TaskTrackingComponent implements OnInit {
     ).subscribe({
       next: () => {
         task.submitted = true;
-        alert('Review submitted');
+        alert('Review submitted successfully');
       },
-      error: err => {
-        console.error(err);
-        alert('Failed to submit review');
-      }
+      error: () => alert('Failed to submit review')
     });
   }
 
   /* ================= NAVIGATION ================= */
-  goBack() {
+  goBack(): void {
     this.router.navigate(['/profile']);
   }
 }

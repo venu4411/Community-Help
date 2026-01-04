@@ -9,17 +9,15 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
-
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [CommonModule, RouterModule], // ✅ REQUIRED
+  imports: [CommonModule, RouterModule],
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.css']
 })
 export class LandingComponent implements AfterViewInit {
 
-  activeSection = '';
   isScrolled = false;
   mobileMenuOpen = false;
 
@@ -49,35 +47,30 @@ export class LandingComponent implements AfterViewInit {
     this.isScrolled = window.scrollY > 50;
   }
 
-  toggleMobileMenu(): void {
+  toggleMobileMenu() {
     this.mobileMenuOpen = !this.mobileMenuOpen;
   }
 
-  goToLogin(): void {
-    this.router.navigate(['/login']);
+  goToBookHelp() {
+    this.router.navigate(['/book-help']);
   }
 
-  goToProfile(): void {
-    this.router.navigate(['/profile']); 
+  // ✅ ADMIN / USER PROFILE ROUTING
+  goToProfile() {
+    if (this.authService.isAdminLoggedIn()) {
+      this.router.navigate(['/admin']);
+    } else {
+      this.router.navigate(['/profile']);
+    }
   }
 
-  logout(): void {
+  logout() {
     this.authService.logout();
+    localStorage.removeItem('admin'); // admin logout
     this.router.navigate(['/']);
   }
-  goToRegister(): void {
-  this.router.navigate(['/register']);
-  }
 
-  goToHelper() {
-    this.router.navigate(['/helper-registration']);
-  }
-  goToBookHelp(): void {
-    this.router.navigate(['/book-help']); 
-  }
-
-
-  benefits: string[] = [
+  benefits = [
     'Simple Requests',
     'Nearby Helpers',
     'Status Tracking',
@@ -85,7 +78,8 @@ export class LandingComponent implements AfterViewInit {
     'Fast Communication',
     'Community Driven'
   ];
-    popularHelpers = [
+
+  popularHelpers = [
     {
       name: 'Arjun Rao',
       role: 'Electrician',

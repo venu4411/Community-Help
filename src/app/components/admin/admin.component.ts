@@ -1,51 +1,29 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent {
 
-  users: any[] = [];
-  helpers: any[] = [];
-  loading = true;
+  constructor(private router: Router) {}
 
-  constructor(private http: HttpClient) {}
-
-  ngOnInit(): void {
-    this.loadData();
+  viewUsers() {
+    this.router.navigate(['/admin/users']);
   }
 
-  loadData() {
-    this.loading = true;
-
-    this.http.get<any[]>('http://localhost:3000/api/admin/users')
-      .subscribe(res => this.users = res);
-
-    this.http.get<any[]>('http://localhost:3000/api/admin/helpers')
-      .subscribe(res => {
-        this.helpers = res;
-        this.loading = false;
-      });
+  viewHelpers() {
+    this.router.navigate(['/admin/helpers']);
   }
 
-  saveUser(user: any) {
-    this.http.put(
-      `http://localhost:3000/api/admin/user/${user.id}`,
-      user
-    ).subscribe(() => alert('User updated'));
+  /* ✅ NEW */
+  viewBookings() {
+    this.router.navigate(['/admin/bookings']);
   }
 
-  saveHelper(helper: any) {
-    this.http.put(
-      `http://localhost:3000/api/admin/helper/${helper.id}`,
-      helper
-    ).subscribe(() => alert('Helper updated'));
+  goBack() {
+    this.router.navigate(['/']);
   }
 }

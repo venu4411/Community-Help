@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router'; // ✅ ADD RouterModule
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -10,14 +10,14 @@ import { AuthService } from '../../services/auth.service';
   imports: [
     CommonModule,
     FormsModule,
-    RouterModule   // ✅ REQUIRED for routerLink
+    RouterModule
   ],
   templateUrl: './profile-details.component.html',
   styleUrls: ['./profile-details.component.css']
 })
 export class ProfileDetailsComponent implements OnInit {
 
-  user: any;
+  user: any = null;
   editMode = false;
   showPassword = false;
   successMessage = '';
@@ -27,20 +27,25 @@ export class ProfileDetailsComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.user = this.auth.getUser();
+
+    // Safety check
+    if (!this.user) {
+      this.router.navigate(['/login']);
+    }
   }
 
-  toggleEdit() {
+  toggleEdit(): void {
     this.editMode = !this.editMode;
     this.successMessage = '';
   }
 
-  togglePassword() {
+  togglePassword(): void {
     this.showPassword = !this.showPassword;
   }
 
-  save() {
+  save(): void {
     const payload: any = {
       fullName: this.user.fullName,
       username: this.user.username,
@@ -49,23 +54,26 @@ export class ProfileDetailsComponent implements OnInit {
       password: this.user.password
     };
 
+    // Helper-only field
     if (this.user.role === 'Helper') {
       payload.price = this.user.price;
     }
 
     this.auth.updateUser(this.user.id, this.user.role, payload).subscribe({
       next: () => {
-        this.successMessage = 'Successfully updated';
+        this.successMessage = 'Profile updated successfully';
         this.editMode = false;
+
+        // Update local storage
         this.auth.setUser(this.user);
       },
       error: () => {
-        this.successMessage = 'Update failed';
+        this.successMessage = 'Update failed. Try again.';
       }
     });
   }
 
-  goBack() {
+  goBack(): void {
     this.router.navigate(['/']);
   }
 }

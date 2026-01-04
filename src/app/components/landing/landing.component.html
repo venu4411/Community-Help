@@ -3,15 +3,14 @@
   <div class="nav-container">
 
     <!-- LOGO -->
-  <div class="nav-logo">
-    <img
-      src="https://img.freepik.com/premium-photo/bold-minimalist-outline-logo-with-strong-visual-impact_1114736-13254.jpg"
-      alt="Community Help Logo"
-      class="logo-circle"
-    />
-    <span class="logo-text">Community Help</span>
-  </div>
-
+    <div class="nav-logo">
+      <img
+        src="https://img.freepik.com/premium-photo/bold-minimalist-outline-logo-with-strong-visual-impact_1114736-13254.jpg"
+        alt="Community Help Logo"
+        class="logo-circle"
+      />
+      <span class="logo-text">Community Help</span>
+    </div>
 
     <!-- LINKS -->
     <ul class="nav-links d-none d-lg-flex">
@@ -19,18 +18,15 @@
     </ul>
 
     <!-- BEFORE LOGIN -->
-  <button
-    *ngIf="!authService.isLoggedIn()"
-    class="helper-login-btn"
-    routerLink="/helper-login">
-    Helper Login
-  </button>
-
-
-
+    <button
+      *ngIf="!authService.isLoggedIn() && !authService.isAdminLoggedIn()"
+      class="helper-login-btn"
+      routerLink="/helper-login">
+      Helper Login
+    </button>
 
     <button
-      *ngIf="!authService.isLoggedIn()"
+      *ngIf="!authService.isLoggedIn() && !authService.isAdminLoggedIn()"
       class="btn btn-outline-light"
       routerLink="/login">
       Login
@@ -38,19 +34,18 @@
 
     <!-- AFTER LOGIN -->
     <button
-      *ngIf="authService.isLoggedIn()"
+      *ngIf="authService.isLoggedIn() || authService.isAdminLoggedIn()"
       class="btn btn-outline-light"
-      routerLink="/profile">
+      (click)="goToProfile()">
       Profile
     </button>
 
     <button
-      *ngIf="authService.isLoggedIn()"
+      *ngIf="authService.isLoggedIn() || authService.isAdminLoggedIn()"
       class="btn btn-outline-danger"
       (click)="logout()">
       Logout
     </button>
-    
 
     <!-- MOBILE MENU ICON -->
     <button class="hamburger d-lg-none" (click)="toggleMobileMenu()">☰</button>
@@ -63,14 +58,14 @@
 
     <!-- BEFORE LOGIN -->
     <a
-      *ngIf="!authService.isLoggedIn()"
+      *ngIf="!authService.isLoggedIn() && !authService.isAdminLoggedIn()"
       routerLink="/helper-login"
       class="btn btn-success mt-3">
       Helper Login
     </a>
 
     <a
-      *ngIf="!authService.isLoggedIn()"
+      *ngIf="!authService.isLoggedIn() && !authService.isAdminLoggedIn()"
       routerLink="/login"
       class="btn btn-outline-light mt-2">
       Login
@@ -78,21 +73,20 @@
 
     <!-- AFTER LOGIN -->
     <button
-      *ngIf="authService.isLoggedIn()"
+      *ngIf="authService.isLoggedIn() || authService.isAdminLoggedIn()"
       class="btn btn-outline-light mt-3"
-      routerLink="/profile">
+      (click)="goToProfile()">
       Profile
     </button>
 
     <button
-      *ngIf="authService.isLoggedIn()"
+      *ngIf="authService.isLoggedIn() || authService.isAdminLoggedIn()"
       class="btn btn-outline-danger mt-2"
       (click)="logout()">
       Logout
     </button>
   </div>
 </nav>
-
 
 <!-- ================= HERO ================= -->
 <section class="hero text-center text-white">
@@ -103,23 +97,19 @@
     </h1>
 
     <!-- NOT LOGGED IN -->
-    <ng-container *ngIf="!authService.isLoggedIn(); else loggedInView">
+    <ng-container
+      *ngIf="!authService.isLoggedIn() && !authService.isAdminLoggedIn();
+             else loggedInView">
 
       <p class="lead mb-4">
         Connect with neighbors and helpers around you
       </p>
 
-      <!-- GET STARTED -->
-      <button
-        class="btn btn-success m-2"
-        routerLink="/register">
+      <button class="btn btn-success m-2" routerLink="/register">
         Get Started
       </button>
 
-      <!-- JOIN AS HELPER -->
-      <button
-        class="btn btn-outline-light m-2"
-        routerLink="/helper-registration">
+      <button class="btn btn-outline-light m-2" routerLink="/helper-registration">
         Join as Helper
       </button>
 
@@ -134,15 +124,15 @@
 
   </div>
 
-  <!-- BOOK FOR HELP BUTTON (VISIBLE AFTER LOGIN) -->
-  <div class="book-help-wrapper" *ngIf="authService.isLoggedIn()">
+  <!-- BOOK FOR HELP (USER / HELPER ONLY) -->
+  <div
+    class="book-help-wrapper"
+    *ngIf="authService.isLoggedIn() && !authService.isAdminLoggedIn()">
     <button class="book-help-btn" (click)="goToBookHelp()">
       Book for Help
     </button>
   </div>
-
 </section>
-
 
 <!-- ================= BENEFITS ================= -->
 <section id="benefits" class="benefits reveal">
@@ -163,69 +153,24 @@
 <!-- ================= POPULAR HELPERS ================= -->
 <section class="helpers-section reveal">
   <div class="container text-center">
-
     <p class="section-tag">POPULAR HELPERS</p>
-    <h2 class="section-title">
-      People who make the community stronger
-    </h2>
+    <h2 class="section-title">People who make the community stronger</h2>
 
     <div class="row justify-content-center g-4 mt-4">
       <div class="col-md-4" *ngFor="let helper of popularHelpers">
         <div class="helper-card">
-
           <div class="helper-img-wrapper">
-            <img
-              [src]="helper.image"
-              alt="{{ helper.name }}"
-              class="helper-img"
-            />
+            <img [src]="helper.image" class="helper-img">
           </div>
-
           <h5 class="helper-name">{{ helper.name }}</h5>
           <p class="helper-role">{{ helper.role }}</p>
           <div class="helper-rating">⭐ {{ helper.rating }}</div>
-
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ================= TRUST ================= -->
-<section class="trust text-center reveal">
-  <div class="container">
-    <h2 class="mb-4">Trusted by Communities</h2>
-
-    <div class="row g-4">
-      <div class="col-6 col-md-3">
-        <div class="trust-card">
-          <h3>50+</h3>
-          <p>Communities</p>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="trust-card">
-          <h3>1000+</h3>
-          <p>Requests</p>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="trust-card">
-          <h3>95%</h3>
-          <p>Positive Feedback</p>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="trust-card">
-          <h3>24/7</h3>
-          <p>Support</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= FOOTER ================= -->
 <footer class="footer text-center">
   © 2025 Neighborhood Community Help Portal
 </footer>

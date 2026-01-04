@@ -1,0 +1,129 @@
+/* PAGE */
+.admin-page {
+  min-height: 100vh;
+  padding: 80px 40px;
+  background: radial-gradient(circle at top, #0f172a, #020617);
+  color: #ffffff;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.title {
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.subtitle {
+  opacity: 0.7;
+  margin-top: 6px;
+}
+
+/* BACK BUTTON */
+.back-btn {
+  padding: 12px 26px;
+  border-radius: 30px;
+  border: 1px solid #22c55e;
+  background: transparent;
+  color: #22c55e;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.35s ease;
+}
+
+.back-btn:hover {
+  background: #22c55e;
+  color: #020617;
+  box-shadow: 0 0 25px rgba(34,197,94,0.6);
+}
+
+/* TABLE WRAPPER */
+.table-wrapper {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(18px);
+  border-radius: 22px;
+  padding: 30px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+  animation: fadeUp 0.7s ease;
+}
+
+/* TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 14px;
+  font-size: 14px;
+  text-align: left;
+}
+
+th {
+  color: #9ca3af;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+tr:not(:last-child) td {
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+/* BADGES */
+.badge {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.success {
+  background: rgba(34,197,94,0.25);
+  color: #22c55e;
+}
+
+.pending {
+  background: rgba(234,179,8,0.25);
+  color: #facc15;
+}
+
+.task {
+  background: rgba(59,130,246,0.25);
+  color: #3b82f6;
+}
+
+/* STATES */
+.loading,
+.empty {
+  opacity: 0.7;
+  margin-top: 40px;
+}
+
+/* ANIMATION */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .admin-page {
+    padding: 60px 20px;
+  }
+
+  table {
+    font-size: 13px;
+  }
+}

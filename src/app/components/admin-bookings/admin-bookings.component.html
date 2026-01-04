@@ -1,0 +1,75 @@
+<div class="admin-page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <h1 class="title">All Bookings</h1>
+      <p class="subtitle">Monitor payments and task status</p>
+    </div>
+
+    <button class="back-btn" (click)="goBack()">⬅ Back</button>
+  </div>
+
+  <!-- LOADING -->
+  <div *ngIf="loading" class="loading">
+    Loading bookings...
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrapper" *ngIf="!loading && bookings.length">
+
+    <table>
+      <thead>
+        <tr>
+          <th>Booking ID</th>
+          <th>User</th>
+          <th>Helper</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Location</th>
+          <th>Amount</th>
+          <th>Payment</th>
+          <th>Task</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let b of bookings">
+          <td>{{ b.booking_id }}</td>
+          <td>{{ b.username }}</td>
+          <td>{{ b.helpername }}</td>
+          <td>{{ b.calendar | date:'dd MMM yyyy' }}</td>
+          <td>{{ b.time }}</td>
+          <td>{{ b.location }}</td>
+          <td>₹{{ b.amount }}</td>
+
+          <td>
+            <span
+              class="badge success"
+              *ngIf="b.payment_status === 'success'">
+              Success
+            </span>
+            <span
+              class="badge pending"
+              *ngIf="b.payment_status !== 'success'">
+              Pending
+            </span>
+          </td>
+
+          <td>
+            <span class="badge task">
+              {{ b.task_status }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <!-- EMPTY -->
+  <p *ngIf="!loading && !bookings.length" class="empty">
+    No bookings found
+  </p>
+
+</div>

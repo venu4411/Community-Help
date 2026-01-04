@@ -1,41 +1,41 @@
 <div class="admin-page">
 
-  <h2 class="page-title">🛠 Admin Dashboard</h2>
-
-  <p *ngIf="loading">Loading...</p>
-
-  <!-- USERS -->
-  <h3 class="section-title">Users</h3>
-  <div class="grid">
-    <div class="card" *ngFor="let u of users">
-      <h4>{{ u.username }}</h4>
-
-      <input [(ngModel)]="u.fullName" placeholder="Full Name">
-      <input [(ngModel)]="u.contact" placeholder="Contact">
-      <input [(ngModel)]="u.location" placeholder="Location">
-
-      <button (click)="saveUser(u)">Save</button>
-    </div>
+  <!-- HEADER -->
+  <div class="admin-header">
+    <h1>Admin Dashboard</h1>
+    <p>Manage users, helpers, and bookings across the platform</p>
   </div>
 
-  <!-- HELPERS -->
-  <h3 class="section-title">Helpers</h3>
-  <div class="grid">
-    <div class="card" *ngFor="let h of helpers">
-      <h4>{{ h.full_name }}</h4>
+  <!-- CARDS -->
+  <div class="card-grid">
 
-      <input [(ngModel)]="h.contact" placeholder="Contact">
-      <input [(ngModel)]="h.location" placeholder="Location">
-      <input [(ngModel)]="h.qualification" placeholder="Qualification">
-      <input [(ngModel)]="h.helpType" placeholder="Help Type">
-
-      <div class="row">
-        <input [(ngModel)]="h.priceType" placeholder="Price Type">
-        <input type="number" [(ngModel)]="h.price" placeholder="Price">
-      </div>
-
-      <button (click)="saveHelper(h)">Save</button>
+    <!-- VIEW USERS -->
+    <div class="glass-card" (click)="viewUsers()">
+      <div class="icon">👤</div>
+      <h3>View User Details</h3>
+      <p>Access all registered residents and their information</p>
+      <div class="action">View Users →</div>
     </div>
+
+    <!-- VIEW HELPERS -->
+    <div class="glass-card" (click)="viewHelpers()">
+      <div class="icon">🛠</div>
+      <h3>View Helper Details</h3>
+      <p>See all helpers, ratings and service details</p>
+      <div class="action">View Helpers →</div>
+    </div>
+
+    <!-- VIEW BOOKINGS (NEW) -->
+    <div class="glass-card" (click)="viewBookings()">
+      <div class="icon">📅</div>
+      <h3>View Bookings</h3>
+      <p>Monitor all service bookings and task status</p>
+      <div class="action">View Bookings →</div>
+    </div>
+
   </div>
+
+  <!-- BACK -->
+  <button class="back-btn" (click)="goBack()">⬅ Back</button>
 
 </div>

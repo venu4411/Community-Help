@@ -1,0 +1,15 @@
+<h2>My Task Requests</h2>
+
+<div *ngFor="let t of tasks" class="card">
+  <p>Date: {{ t.calendar | date }}</p>
+  <p>Time: {{ t.time }}</p>
+  <p>Location: {{ t.location }}</p>
+  <p>Amount: ₹{{ t.amount }}</p>
+
+  <p>
+    Status:
+    <b [style.color]="t.task_status === 'accepted' ? 'green' : 'orange'">
+      {{ t.task_status }}
+    </b>
+  </p>
+</div>
