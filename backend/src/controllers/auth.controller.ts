@@ -527,3 +527,368 @@ export const adminLogin = (req: Request, res: Response) => {
     });
   });
 };
+
+/* ================= admin info ================= */
+
+/* ================= GET ALL USERS ================= */
+export const getAllUsers = (req: Request, res: Response) => {
+  const sql = `SELECT * FROM users`;
+
+  db.query(sql, (err, rows) => {
+    if (err) {
+      console.error('❌ GET USERS ERROR:', err);
+      return res.status(500).json({ message: 'Failed to fetch users' });
+    }
+    res.json(rows);
+  });
+};
+
+/* ================= UPDATE USER (ADMIN) ================= */
+export const updateUserByAdmin = (req: Request, res: Response) => {
+  const { id } = req.params;
+  const d = req.body;
+
+  if (!id) {
+    return res.status(400).json({ message: 'User ID missing' });
+  }
+
+  if (!d.full_name || !d.username) {
+    return res.status(400).json({ message: 'Full name and username required' });
+  }
+
+  const sql = `
+    UPDATE users SET
+      full_name = ?,
+      username = ?,
+      contact = ?,
+      location = ?,
+      role = ?,
+      gender = ?
+    WHERE id = ?
+  `;
+
+  const values = [
+    d.full_name.trim(),
+    d.username.trim(),
+    d.contact || '',
+    d.location || '',
+    d.role || 'Resident',
+    d.gender || '',
+    id
+  ];
+
+  db.query(sql, values, err => {
+    if (err) {
+      console.error('❌ UPDATE USER ERROR:', err);
+      return res.status(500).json({ message: 'Update failed' });
+    }
+
+    res.json({ message: '✅ User updated successfully' });
+  });
+};
+
+
+
+
+/* ================= GET ALL HELPERS ================= */
+export const getAllHelpers = (req: Request, res: Response) => {
+  const sql = `SELECT * FROM heplers`;
+
+  db.query(sql, (err, rows) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: 'Failed to fetch helpers' });
+    }
+    res.json(rows);
+  });
+};
+
+/* ================= UPDATE HELPER (ADMIN) ================= */
+export const updateHelperByAdmin = (req: Request, res: Response) => {
+  const { id } = req.params;
+  const d = req.body;
+
+  if (!id) {
+    return res.status(400).json({ message: 'Helper ID missing' });
+  }
+
+  if (!d.full_name || !d.username) {
+    return res.status(400).json({ message: 'Full name and username required' });
+  }
+
+  const sql = `
+    UPDATE heplers SET
+      full_name = ?,
+      username = ?,
+      contact = ?,
+      location = ?,
+      gender = ?,
+      age = ?,
+      qualification = ?,
+      help_type = ?,
+      price = ?,
+      review = ?
+    WHERE id = ?
+  `;
+
+  const values = [
+    d.full_name.trim(),
+    d.username.trim(),
+    d.contact || '',
+    d.location || '',
+    d.gender || '',
+    d.age || 0,
+    d.qualification || '',
+    d.help_type || '',
+    d.price || 0,
+    d.review || '',
+    id
+  ];
+
+  db.query(sql, values, (err) => {
+    if (err) {
+      console.error('❌ UPDATE ERROR:', err);
+      return res.status(500).json({ message: 'Update failed' });
+    }
+
+    res.json({ message: 'Helper updated successfully' });
+  });
+};
+
+/* ================= ADMIN – GET ALL BOOKINGS ================= */
+export const getAllBookings = (req: Request, res: Response) => {
+  const sql = `
+    SELECT 
+      id,
+      booking_id,
+      username,
+      helpername,
+      calendar,
+      time,
+      location,
+      payment_method,
+      amount,
+      payment_status,
+      task_status,
+      created_at
+    FROM payments
+    ORDER BY created_at DESC
+  `;
+
+  db.query(sql, (err, rows) => {
+    if (err) {
+      console.error('❌ BOOKINGS FETCH ERROR:', err);
+      return res.status(500).json({ message: 'Failed to fetch bookings' });
+    }
+    res.json(rows);
+  });
+};
+
+
+
+/* ================= GET HELPER PENDING TASKS ================= */
+export const getPendingForHelper = (req: Request, res: Response) => {
+  console.log('➡️ Helper pending tasks API called');
+
+  const sql = `
+    SELECT
+      id,
+      username,
+      calendar,
+      time,
+      location,
+      payment_method,
+      amount,
+      task_status
+    FROM payments
+    WHERE task_status = 'pending'
+    ORDER BY created_at DESC
+  `;
+
+  db.query(sql, (err, rows) => {
+    if (err) {
+      console.error('❌ DB error:', err);
+      return res.status(500).json({ message: 'DB error' });
+    }
+
+    console.log('✅ Pending tasks:', rows);
+    res.json(rows);
+  });
+};
+
+
+/* ================= HELPER TASKS (ORDERED) ================= */
+export const getHelperTasks = (req: Request, res: Response) => {
+  const { helpername } = req.params;
+
+  if (!helpername) {
+    return res.status(400).json({ message: 'Helper name required' });
+  }
+
+  const sql = `
+    SELECT *
+    FROM payments
+    WHERE helpername = ?
+       OR task_status = 'pending'
+    ORDER BY
+      CASE task_status
+        WHEN 'pending' THEN 1
+        WHEN 'accepted' THEN 2
+        WHEN 'in_progress' THEN 3
+        WHEN 'completed' THEN 4
+        ELSE 5
+      END,
+      created_at DESC
+  `;
+
+  db.query(sql, [helpername], (err, result) => {
+    if (err) {
+      console.error('❌ FETCH ERROR:', err);
+      return res.status(500).json({ message: 'Failed to fetch tasks' });
+    }
+
+    res.json(result);
+  });
+};
+
+/* ================= ACCEPT TASK ================= */
+export const acceptTask = (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { helpername } = req.body;
+
+  const sql = `
+    UPDATE payments
+    SET
+      task_status = 'in_progress',
+      helpername = ?
+    WHERE id = ?
+      AND task_status = 'pending'
+  `;
+
+  db.query(sql, [helpername, id], (err, result: any) => {
+    if (err) {
+      console.error('❌ UPDATE ERROR:', err);
+      return res.status(500).json({ message: 'Update failed' });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(400).json({ message: 'Task already processed' });
+    }
+
+    res.json({ message: 'Task moved to in_progress' });
+  });
+};
+
+
+
+/* ================= USER ================= */
+
+// Get tasks by username
+export const getUserTasks = (req: Request, res: Response) => {
+  const { username } = req.params;
+
+  const sql = `
+    SELECT *
+    FROM payments
+    WHERE username = ?
+    ORDER BY created_at DESC
+  `;
+
+  db.query(sql, [username], (err, result) => {
+    if (err) return res.status(500).json(err);
+    res.json(result);
+  });
+};
+
+
+/* ================= CALENDAR ================= */
+export const getCalendar = (req: Request, res: Response) => {
+  const { role, name } = req.params;
+
+  let sql = '';
+
+  if (role === 'user') {
+    sql = `
+      SELECT
+        id,
+        helpername,
+        calendar,
+        time,
+        location,
+        task_status
+      FROM payments
+      WHERE username = ?
+      ORDER BY calendar ASC, time ASC
+    `;
+  }
+
+  if (role === 'helper') {
+    sql = `
+      SELECT
+        id,
+        username,
+        calendar,
+        time,
+        location,
+        task_status
+      FROM payments
+      WHERE helpername = ?
+      ORDER BY calendar ASC, time ASC
+    `;
+  }
+
+  db.query(sql, [name], (err, result) => {
+    if (err) {
+      console.error('❌ Calendar error:', err);
+      return res.status(500).json({ message: 'Calendar fetch failed' });
+    }
+
+    res.json(result);
+  });
+};
+
+/* ================= SEND MESSAGE ================= */
+export const sendMessage = (req: Request, res: Response) => {
+  const { sender, receiver, message } = req.body;
+
+  if (!sender || !receiver || !message) {
+    return res.status(400).json({ message: 'Missing fields' });
+  }
+
+  const sql = `
+    INSERT INTO messages (sender, receiver, message)
+    VALUES (?, ?, ?)
+  `;
+
+  db.query(sql, [sender, receiver, message], err => {
+    if (err) {
+      console.error('SEND MESSAGE ERROR:', err);
+      return res.status(500).json({ message: 'Failed to send message' });
+    }
+
+    res.json({ message: 'Message sent' });
+  });
+};
+
+
+/* ================= GET CHAT HISTORY ================= */
+export const getChatHistory = (req: Request, res: Response) => {
+  const { user1, user2 } = req.params;
+
+  const sql = `
+    SELECT *
+    FROM messages
+    WHERE (sender = ? AND receiver = ?)
+       OR (sender = ? AND receiver = ?)
+    ORDER BY created_at ASC
+  `;
+
+  db.query(sql, [user1, user2, user2, user1], (err, result) => {
+    if (err) {
+      console.error('CHAT HISTORY ERROR:', err);
+      return res.status(500).json({ message: 'Failed to load chat' });
+    }
+
+    res.json(result);
+  });
+};

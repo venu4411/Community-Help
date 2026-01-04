@@ -15,6 +15,23 @@ import {
   rateHelper,
 
   adminLogin,
+  getAllUsers,
+  getAllHelpers,
+  updateHelperByAdmin,
+  updateUserByAdmin,
+  getAllBookings,
+
+
+
+  getPendingForHelper,
+  acceptTask,
+  getHelperTasks,
+  getUserTasks,
+
+  getCalendar,
+
+  sendMessage,
+  getChatHistory,
 
 } from '../controllers/auth.controller';
 
@@ -37,8 +54,31 @@ router.get('/task/helper/:helpername', getTasksByHelper);
 router.post('/task/complete', completeTask);
 router.post('/rate-helper', rateHelper);
 
+
 router.post('/admin/login', adminLogin);
 
+router.get('/admin/users', getAllUsers);
+router.put('/admin/users/:id', updateUserByAdmin);
+
+
+
+router.get('/admin/helpers', getAllHelpers);
+router.put('/admin/helpers/:id', updateHelperByAdmin);
+
+router.get('/admin/bookings', getAllBookings);
+
+router.get('/payments/helper/pending', getPendingForHelper);
+router.put('/payments/accept/:id', acceptTask);
+router.get('/payments/user/:username', getUserTasks);
+router.get('/payments/helper/:helpername', getHelperTasks);
+
+
+
+router.get('/calendar/:role/:name', getCalendar);
+
+
+router.post('/chat/send', sendMessage);
+router.get('/chat/:user1/:user2', getChatHistory);
 
 
 
