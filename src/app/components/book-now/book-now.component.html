@@ -4,10 +4,15 @@
 
   <div class="glass-container animate">
 
+    <!-- AVAILABILITY BADGE -->
+    <div class="availability-badge">
+      ● Available
+    </div>
+
     <!-- LEFT : HELPER INFO -->
     <div class="helper-section">
 
-      <img class="avatar" [src]="getProfileImage()" />
+      <img class="avatar" [src]="getProfileImage()" alt="Helper" />
 
       <h3 class="name">{{ helper.fullName }}</h3>
 
@@ -28,10 +33,17 @@
       <h3 class="form-title">Booking Details</h3>
 
       <label>Date</label>
-      <input type="date" [min]="today" [(ngModel)]="booking.date" />
+      <input
+        type="date"
+        [min]="today"
+        [(ngModel)]="booking.date"
+      />
 
       <label>Time</label>
-      <input type="time" [(ngModel)]="booking.time" />
+      <input
+        type="time"
+        [(ngModel)]="booking.time"
+      />
 
       <label>Location</label>
       <input

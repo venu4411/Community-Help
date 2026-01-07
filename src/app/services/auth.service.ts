@@ -160,6 +160,13 @@ export class AuthService {
     );
   }
 
+  checkAvailability(data: any) {
+    return this.http.post<any>(
+      `${this.API}/check-availability`,
+      data
+    );
+  }
+
 
 
 
@@ -199,15 +206,33 @@ export class AuthService {
 
 
   /* ================= CHAT ================= */
+
+  /* ================= CHAT ================= */
+  getChatContacts(username: string, role: string) {
+    return this.http.get<any[]>(
+      `${this.API}/chat/contacts`,
+      {
+        params: {
+          username,
+          role
+        }
+      }
+    );
+  }
+
+
+  getChatHistory(u1: string, u2: string) {
+    return this.http.get<any[]>(
+      `${this.API}/chat/history?u1=${u1}&u2=${u2}`
+    );
+  }
+
   sendMessage(data: any) {
     return this.http.post(`${this.API}/chat/send`, data);
   }
 
-  getChatHistory(user1: string, user2: string) {
-    return this.http.get<any[]>(
-      `${this.API}/chat/${user1}/${user2}`
-    );
-  }
+
+
 
 
 

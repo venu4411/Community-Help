@@ -40,7 +40,7 @@ export class CalendarComponent implements OnInit {
   }
 
   loadCalendar(): void {
-    const username = this.user.username; // ✅ IMPORTANT
+    const username = this.user.username; 
 
     this.auth.getCalendar(this.role, username).subscribe({
       next: data => {

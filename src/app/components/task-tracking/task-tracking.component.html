@@ -83,7 +83,7 @@
           <!-- COMPLETE (ONLY WHEN ACCEPTED) -->
           <button
             class="complete-btn"
-            *ngIf="task.task_status === 'accepted'"
+            *ngIf="task.task_status === 'accepted' || task.task_status === 'in_progress'"
             (click)="completeTask(task)">
             Slide to Complete →
           </button>

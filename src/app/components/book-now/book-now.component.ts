@@ -12,8 +12,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class BookNowComponent {
 
-  helper: any;
-  today!: string;
+  helper: any = null;
+  today: string;
 
   booking = {
     date: '',
@@ -23,7 +23,7 @@ export class BookNowComponent {
 
   constructor(private router: Router) {
     const nav = this.router.getCurrentNavigation();
-    this.helper = nav?.extras?.state?.['helper'];
+    this.helper = nav?.extras?.state?.['helper'] ?? null;
 
     if (!this.helper) {
       alert('Invalid booking session');

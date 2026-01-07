@@ -36,7 +36,7 @@ export class AdminHelpersComponent implements OnInit {
 
   editHelper(helper: any) {
     this.selectedHelper = {
-        id: helper.id,                 // 🔑 REQUIRED
+        id: helper.id,                 
         full_name: helper.full_name,
         username: helper.username,
         contact: helper.contact || '',

@@ -18,7 +18,7 @@ export class AdminComponent {
     this.router.navigate(['/admin/helpers']);
   }
 
-  /* ✅ NEW */
+  
   viewBookings() {
     this.router.navigate(['/admin/bookings']);
   }

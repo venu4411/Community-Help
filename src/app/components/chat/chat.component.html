@@ -1,68 +1,64 @@
+<div class="chat-page">
+
   <!-- SIDE MENU -->
   <aside class="side-menu">
     <h3 class="menu-title">MENU</h3>
 
-    <button class="menu-item active">🏠 Dashboard</button>
-
-    <!-- USER (Resident) -->
-    <button
-      *ngIf="user?.role?.toLowerCase() === 'resident'"
-      class="menu-item"
-      routerLink="/tracking"
-      routerLinkActive="active">
-      📝 Tasks
-    </button>
-
-    <button
-      class="menu-item"
-      routerLink="/calendar"
-      routerLinkActive="active">
-      📅 Calendar
-    </button>
-
-
-    <!-- HELPER -->
-    <button
-      *ngIf="user?.role?.toLowerCase() === 'helper'"
-      class="menu-item"
-      routerLink="/helper/requests"
-      routerLinkActive="active">
-      📊 Task Request
-    </button>
-
-    <button class="menu-item">👥 Chat</button>
+    <button class="menu-item" routerLink="/profile">🏠 Dashboard</button>
+    <button class="menu-item" routerLink="/calendar">📅 Calendar</button>
+    <button class="menu-item active">👥 Chat</button>
 
     <button class="menu-item back-btn" (click)="goBack()">⬅ Back</button>
   </aside>
-<div class="chat-page">
 
-  <div class="chat-header">
-    <input
-      [(ngModel)]="partner"
-      placeholder="Enter username"
-    />
-    <button (click)="loadChat()">Start Chat</button>
-  </div>
-
-  <div class="chat-box">
+  <!-- CONTACT LIST -->
+  <div class="chat-list">
+    <h2>Chats</h2>
 
     <div
-      class="msg"
-      *ngFor="let m of messages"
-      [class.me]="m.sender === user.username">
+      class="contact"
+      *ngFor="let c of contacts"
+      (click)="openChat(c)">
 
-      {{ m.message }}
+      <img [src]="getImage(c.gender)" />
+
+      <div class="info">
+        <strong>{{ c.full_name }}</strong>
+        <small>&#64;{{ c.username }}</small>
+      </div>
+
+      <button class="chat-btn">Chat</button>
     </div>
-
   </div>
 
-  <div class="chat-input">
-    <input
-      [(ngModel)]="message"
-      placeholder="Type message..."
-      (keyup.enter)="send()"
-    />
-    <button (click)="send()">Send</button>
+  <!-- CHAT WINDOW -->
+  <div class="chat-window" *ngIf="selectedUser">
+
+    <div class="chat-header">
+      <img [src]="getImage(selectedUser.gender)" />
+      <div>
+        <strong>{{ selectedUser.full_name }}</strong>
+        <small>&#64;{{ selectedUser.username }}</small>
+      </div>
+    </div>
+
+    <div class="messages">
+      <div
+        class="msg"
+        *ngFor="let m of messages"
+        [class.me]="m.sender === user.username">
+        {{ m.message }}
+      </div>
+    </div>
+
+    <div class="input-box">
+      <input
+        [(ngModel)]="messageText"
+        placeholder="Type a message..."
+        (keyup.enter)="sendMessage()" />
+      <button (click)="sendMessage()">Send</button>
+    </div>
+
   </div>
 
 </div>
