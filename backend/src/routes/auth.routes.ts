@@ -32,6 +32,8 @@ import {
 
   sendMessage,
   getChatHistory,
+  getChatContacts,
+  checkAvailability,
 
 } from '../controllers/auth.controller';
 
@@ -77,8 +79,13 @@ router.get('/payments/helper/:helpername', getHelperTasks);
 router.get('/calendar/:role/:name', getCalendar);
 
 
+router.get('/chat/contacts', getChatContacts);
+router.get('/chat/history', getChatHistory);
 router.post('/chat/send', sendMessage);
-router.get('/chat/:user1/:user2', getChatHistory);
+
+
+
+router.post('/check-availability', checkAvailability);
 
 
 

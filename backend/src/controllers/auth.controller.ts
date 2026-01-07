@@ -846,13 +846,101 @@ export const getCalendar = (req: Request, res: Response) => {
     res.json(result);
   });
 };
+/* ================= CHAT CONTACT LIST ================= */
+export const getChatContacts = (req: Request, res: Response) => {
+  const username = String(req.query.username || '');
+  const role = String(req.query.role || '').toLowerCase();
+
+  if (!username || !role) {
+    return res.status(400).json({ message: 'Username and role required' });
+  }
+
+  console.log('➡️ Chat contacts API:', username, role);
+
+  let sql = '';
+  let params: any[] = [];
+
+  // ================= USER / RESIDENT =================
+  // show helpers booked by user
+  if (role === 'resident') {
+    sql = `
+      SELECT DISTINCT
+        h.username,
+        h.full_name,
+        h.gender
+      FROM payments p
+      JOIN heplers h ON h.username = p.helpername
+      WHERE p.username = ?
+        AND p.helpername IS NOT NULL
+    `;
+    params = [username];
+  }
+
+  // ================= HELPER =================
+  // show users who booked helper
+  else if (role === 'helper') {
+    sql = `
+      SELECT DISTINCT
+        u.username,
+        u.full_name,
+        u.gender
+      FROM payments p
+      JOIN users u ON u.username = p.username
+      WHERE p.helpername = ?
+    `;
+    params = [username];
+  }
+
+  else {
+    return res.json([]);
+  }
+
+  db.query(sql, params, (err, result) => {
+    if (err) {
+      console.error('❌ CHAT LIST ERROR:', err);
+      return res.status(500).json([]);
+    }
+
+    res.json(result);
+  });
+};
+
+
+
+
+/* ================= CHAT HISTORY ================= */
+export const getChatHistory = (req: Request, res: Response) => {
+  const u1 = String(req.query.u1 || '');
+  const u2 = String(req.query.u2 || '');
+
+  if (!u1 || !u2) {
+    return res.json([]);
+  }
+
+  const sql = `
+    SELECT sender, receiver, message, created_at
+    FROM messages
+    WHERE (sender = ? AND receiver = ?)
+       OR (sender = ? AND receiver = ?)
+    ORDER BY created_at ASC
+  `;
+
+  db.query(sql, [u1, u2, u2, u1], (err, result) => {
+    if (err) {
+      console.error('❌ CHAT HISTORY ERROR:', err);
+      return res.status(500).json([]);
+    }
+    res.json(result);
+  });
+};
+
 
 /* ================= SEND MESSAGE ================= */
 export const sendMessage = (req: Request, res: Response) => {
   const { sender, receiver, message } = req.body;
 
   if (!sender || !receiver || !message) {
-    return res.status(400).json({ message: 'Missing fields' });
+    return res.status(400).json({ message: 'Invalid message data' });
   }
 
   const sql = `
@@ -862,33 +950,35 @@ export const sendMessage = (req: Request, res: Response) => {
 
   db.query(sql, [sender, receiver, message], err => {
     if (err) {
-      console.error('SEND MESSAGE ERROR:', err);
-      return res.status(500).json({ message: 'Failed to send message' });
+      console.error('❌ SEND MESSAGE ERROR:', err);
+      return res.status(500).json(err);
     }
 
-    res.json({ message: 'Message sent' });
+    res.json({ success: true });
   });
 };
 
 
-/* ================= GET CHAT HISTORY ================= */
-export const getChatHistory = (req: Request, res: Response) => {
-  const { user1, user2 } = req.params;
+export const checkAvailability = (req: Request, res: Response) => {
+  const { helpername, calendar, time } = req.body;
 
-  const sql = `
-    SELECT *
-    FROM messages
-    WHERE (sender = ? AND receiver = ?)
-       OR (sender = ? AND receiver = ?)
-    ORDER BY created_at ASC
+  const query = `
+    SELECT id FROM payments
+    WHERE helpername = ?
+      AND calendar = ?
+      AND time = ?
+      AND task_status IN ('accepted', 'completed')
   `;
 
-  db.query(sql, [user1, user2, user2, user1], (err, result) => {
+  db.query(query, [helpername, calendar, time], (err, results: any[]) => {
     if (err) {
-      console.error('CHAT HISTORY ERROR:', err);
-      return res.status(500).json({ message: 'Failed to load chat' });
+      return res.status(500).json({ message: 'Server error' });
     }
 
-    res.json(result);
+    if (results.length > 0) {
+      return res.json({ available: false });
+    } else {
+      return res.json({ available: true });
+    }
   });
 };
