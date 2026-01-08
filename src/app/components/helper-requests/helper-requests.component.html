@@ -6,9 +6,10 @@
 
     <button class="menu-item" routerLink="/profile">🏠 Dashboard</button>
     <button class="menu-item" routerLink="/calendar">📅 Calendar</button>
-    
+
     <button class="menu-item active">📊 Task Request</button>
-    <button class="menu-item">👥 Chat</button>  
+    <button class="menu-item">👥 Chat</button>
+
     <button class="menu-item back-btn" (click)="goBack()">⬅ Back</button>
   </aside>
 
@@ -19,6 +20,7 @@
     <p class="empty" *ngIf="!tasks.length">No pending requests</p>
 
     <div class="task-grid">
+
       <div class="profile-card" *ngFor="let t of tasks">
 
         <h3 class="task-title">{{ t.username }}</h3>
@@ -32,19 +34,40 @@
           <p><span>Status</span><b>{{ t.task_status }}</b></p>
         </div>
 
+        <!-- ACCEPT BUTTON -->
         <button
           class="complete-btn"
-          [disabled]="t.task_status !== 'pending'"
-          (click)="acceptTask(t.id)"
-        >
-          {{
-            t.task_status === 'pending'
-              ? 'Accept →'
-              : t.task_status === 'in_progress'
-                ? 'In Progress'
-                : 'Completed'
-          }}
+          *ngIf="t.task_status === 'pending'"
+          (click)="acceptTask(t.id)">
+          Accept →
         </button>
+
+        <!-- 🔐 PIN VERIFICATION (AFTER ACCEPTED / IN_PROGRESS) -->
+        <div class="pin-wrapper"
+             *ngIf="t.task_status === 'in_progress'">
+
+          <p class="pin-label">Enter Tracking PIN</p>
+
+          <div class="pin-boxes">
+            <input
+              class="pin-input"
+              maxlength="1"
+              *ngFor="let i of [0,1,2,3]; let idx = index"
+              (input)="onPinInput($event, idx, t)"
+            />
+          </div>
+
+          <button class="verify-btn" (click)="verifyPin(t)">
+            Verify PIN & Start Work
+          </button>
+
+        </div>
+
+        <!-- WORK STARTED -->
+        <p *ngIf="t.task_status === 'work_in_progress'"
+           class="work-started">
+          ✅ Work In Progress
+        </p>
 
       </div>
     </div>

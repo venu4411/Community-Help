@@ -4,41 +4,31 @@
   <aside class="side-menu">
     <h3 class="menu-title">MENU</h3>
 
-    <button
-      class="menu-item"
-      routerLink="/profile"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }">
+    <button class="menu-item" routerLink="/profile" routerLinkActive="active">
       🏠 Dashboard
     </button>
 
-    <button
-      *ngIf="role === 'user'"
-      class="menu-item"
-      routerLink="/tracking"
-      routerLinkActive="active">
+    <button *ngIf="role === 'user'"
+            class="menu-item"
+            routerLink="/tracking"
+            routerLinkActive="active">
       📝 Tasks
     </button>
 
-    <button
-      class="menu-item"
-      routerLink="/calendar"
-      routerLinkActive="active">
+    <button class="menu-item"
+            routerLink="/calendar"
+            routerLinkActive="active">
       📅 Calendar
     </button>
 
-    <button
-      *ngIf="role === 'helper'"
-      class="menu-item"
-      routerLink="/helper/requests"
-      routerLinkActive="active">
+    <button *ngIf="role === 'helper'"
+            class="menu-item"
+            routerLink="/helper/requests"
+            routerLinkActive="active">
       📊 Task Request
     </button>
-        <!-- TEAM -->
-    <button
-      class="menu-item"
-      routerLink="/team"
-      routerLinkActive="active">
+
+    <button class="menu-item" routerLink="/team" routerLinkActive="active">
       👥 Chat
     </button>
 
@@ -69,6 +59,7 @@
           <p><span>Location</span>{{ task.location }}</p>
           <p><span>Payment</span>{{ task.payment_method }}</p>
           <p><span>Amount</span>₹{{ task.amount }}</p>
+
           <p>
             <span>Status</span>
             <b [class.done]="task.task_status === 'completed'">
@@ -77,43 +68,56 @@
           </p>
         </div>
 
+        <!-- 🔐 TRACKING PIN -->
+        <div class="pin-wrapper"
+             *ngIf="task.tracking_pin && 
+                    (task.task_status === 'accepted' || 
+                     task.task_status === 'in_progress' || 
+                     task.task_status === 'work_in_progress')">
+
+          <p class="pin-label">Tracking PIN</p>
+
+          <div class="pin-boxes">
+            <div class="pin-box"
+                 *ngFor="let d of task.tracking_pin.toString().split('')">
+              {{ d }}
+            </div>
+          </div>
+        </div>
+
         <!-- USER ACTIONS -->
         <div *ngIf="role === 'user'">
 
-          <!-- COMPLETE (ONLY WHEN ACCEPTED) -->
-          <button
-            class="complete-btn"
-            *ngIf="task.task_status === 'accepted' || task.task_status === 'in_progress'"
-            (click)="completeTask(task)">
+          <!-- ✅ SLIDE TO COMPLETE (NOW ALSO FOR work_in_progress) -->
+          <button class="complete-btn"
+                  *ngIf="
+                    task.task_status === 'accepted' ||
+                    task.task_status === 'in_progress' ||
+                    task.task_status === 'work_in_progress'
+                  "
+                  (click)="completeTask(task)">
             Slide to Complete →
           </button>
 
-          <!-- REVIEW (ONLY WHEN COMPLETED) -->
+          <!-- ✅ REVIEW AFTER COMPLETED -->
           <div *ngIf="task.task_status === 'completed'">
 
-            <!-- STAR RATING -->
             <div class="stars">
-              <span
-                *ngFor="let s of [1,2,3,4,5]"
-                (click)="setRating(task, s)"
-                [class.active]="s <= task.userRating"
-                [class.disabled]="task.submitted">
+              <span *ngFor="let s of [1,2,3,4,5]"
+                    (click)="setRating(task, s)"
+                    [class.active]="s <= task.userRating"
+                    [class.disabled]="task.submitted">
                 ★
               </span>
             </div>
 
-            <!-- REVIEW TEXT -->
-            <textarea
-              [(ngModel)]="task.userReview"
-              placeholder="Write your review..."
-              [disabled]="task.submitted">
-            </textarea>
+            <textarea [(ngModel)]="task.userReview"
+                      placeholder="Write your review..."
+                      [disabled]="task.submitted"></textarea>
 
-            <!-- SUBMIT -->
-            <button
-              class="submit-btn"
-              (click)="submitReview(task)"
-              [disabled]="task.submitted">
+            <button class="submit-btn"
+                    (click)="submitReview(task)"
+                    [disabled]="task.submitted">
               {{ task.submitted ? 'Review Submitted ✔' : 'Submit Review' }}
             </button>
 
@@ -122,6 +126,5 @@
 
       </div>
     </div>
-
   </div>
 </div>

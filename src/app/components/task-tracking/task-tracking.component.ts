@@ -40,11 +40,9 @@ export class TaskTrackingComponent implements OnInit {
     this.loadTasks();
   }
 
-  /* ================= LOAD TASKS ================= */
   loadTasks(): void {
     this.loading = true;
 
-    // USER TASKS
     if (this.role === 'user') {
       this.http.get<any[]>(
         `http://localhost:3000/api/task/user/${this.user.username}`
@@ -65,7 +63,6 @@ export class TaskTrackingComponent implements OnInit {
       });
     }
 
-    // HELPER TASKS
     if (this.role === 'helper') {
       this.http.get<any[]>(
         `http://localhost:3000/api/task/helper/${this.user.fullName}`
@@ -82,38 +79,25 @@ export class TaskTrackingComponent implements OnInit {
     }
   }
 
-  /* ================= FORMAT DATE ================= */
   formatDate(date: string): string {
     return date ? new Date(date).toLocaleDateString('en-IN') : '-';
   }
 
-  /* ================= COMPLETE TASK ================= */
   completeTask(task: any): void {
-    if (this.role !== 'user') return;
-
     this.http.post(
       'http://localhost:3000/api/task/complete',
       { paymentId: task.id }
-    ).subscribe({
-      next: () => {
-        task.task_status = 'completed';
-      },
-      error: () => alert('Failed to complete task')
+    ).subscribe(() => {
+      task.task_status = 'completed';
     });
   }
 
-  /* ================= STAR RATING ================= */
   setRating(task: any, rating: number): void {
-    if (task.submitted) return;
-    task.userRating = rating;
+    if (!task.submitted) task.userRating = rating;
   }
 
-  /* ================= SUBMIT REVIEW ================= */
   submitReview(task: any): void {
-    if (task.submitted || !task.userRating) {
-      alert('Please select a rating');
-      return;
-    }
+    if (!task.userRating) return;
 
     this.http.post(
       'http://localhost:3000/api/rate-helper',
@@ -122,16 +106,11 @@ export class TaskTrackingComponent implements OnInit {
         rating: task.userRating,
         review: task.userReview
       }
-    ).subscribe({
-      next: () => {
-        task.submitted = true;
-        alert('Review submitted successfully');
-      },
-      error: () => alert('Failed to submit review')
+    ).subscribe(() => {
+      task.submitted = true;
     });
   }
 
-  /* ================= NAVIGATION ================= */
   goBack(): void {
     this.router.navigate(['/profile']);
   }

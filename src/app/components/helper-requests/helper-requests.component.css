@@ -214,3 +214,47 @@
     grid-template-columns: 1fr;
   }
 }
+/* ================= PIN INPUT ================= */
+.pin-wrapper {
+  margin-top: 14px;
+}
+
+.pin-label {
+  font-size: 13px;
+  opacity: 0.7;
+  margin-bottom: 8px;
+}
+
+.pin-boxes {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.pin-input {
+  width: 48px;
+  height: 56px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+
+  color: #22c55e;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  outline: none;
+}
+
+.verify-btn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 24px;
+  border: none;
+  cursor: pointer;
+
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #fff;
+  font-weight: 600;
+}

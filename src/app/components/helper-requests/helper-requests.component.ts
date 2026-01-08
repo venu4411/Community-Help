@@ -15,6 +15,9 @@ export class HelperRequestsComponent implements OnInit {
   tasks: any[] = [];
   user: any;
 
+  // store pin digits per task
+  pinMap: { [taskId: number]: string[] } = {};
+
   constructor(
     private auth: AuthService,
     private router: Router
@@ -34,17 +37,57 @@ export class HelperRequestsComponent implements OnInit {
 
   loadTasks(): void {
     this.auth.getHelperTasks(this.user.username).subscribe({
-      next: data => this.tasks = data,
-      error: err => console.error(err)
+      next: (data: any[]) => {
+        this.tasks = data;
+      },
+      error: err => console.error('LOAD TASK ERROR', err)
     });
   }
 
   acceptTask(id: number): void {
-    this.auth.acceptTask(id, this.user.username).subscribe(() => {
-      this.loadTasks(); // reload to reflect new order + status
+    this.auth.acceptTask(id, this.user.username).subscribe({
+      next: () => this.loadTasks(),
+      error: err => console.error('ACCEPT TASK ERROR', err)
     });
   }
 
+  /* ================= PIN INPUT ================= */
+  onPinInput(event: any, index: number, task: any): void {
+    const value = event.target.value;
+
+    if (!/^[0-9]$/.test(value)) {
+      event.target.value = '';
+      return;
+    }
+
+    if (!this.pinMap[task.id]) {
+      this.pinMap[task.id] = ['', '', '', ''];
+    }
+
+    this.pinMap[task.id][index] = value;
+  }
+
+  /* ================= VERIFY PIN ================= */
+  verifyPin(task: any): void {
+    const pinArr = this.pinMap[task.id];
+
+    if (!pinArr || pinArr.some(d => d === '')) {
+      alert('Please enter the full 4-digit PIN');
+      return;
+    }
+
+    const pin = pinArr.join('');
+
+    this.auth.verifyPin(task.id, pin).subscribe({
+      next: () => {
+        alert('PIN verified. Work started.');
+        this.loadTasks();
+      },
+      error: () => {
+        alert('Invalid PIN');
+      }
+    });
+  }
 
   goBack(): void {
     this.router.navigate(['/profile']);

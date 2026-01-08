@@ -139,12 +139,14 @@ export class AuthService {
     );
   }
 
+  /* ================= HELPER TASKS ================= */
   getHelperTasks(helpername: string) {
     return this.http.get<any[]>(
       `${this.API}/payments/helper/${helpername}`
     );
   }
 
+  /* ================= ACCEPT TASK ================= */
   acceptTask(id: number, helpername: string) {
     return this.http.put(
       `${this.API}/payments/accept/${id}`,
@@ -233,6 +235,13 @@ export class AuthService {
 
 
 
+  /* ================= VERIFY PIN ================= */
+  verifyPin(taskId: number, pin: string) {
+    return this.http.post(
+      `${this.API}/payments/verify-pin`,
+      { taskId, pin }
+    );
+  }
 
 
 

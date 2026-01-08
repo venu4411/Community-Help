@@ -38,7 +38,7 @@ export class PaymentTaskTrackingComponent  implements OnInit {
       if (this.progress === 30) this.status = 'Helper started';
       if (this.progress === 60) this.status = 'Helper nearby';
       if (this.progress === 100) {
-        this.status = 'Helper arrived 🎉';
+        this.status = 'Helper arriving 🎉';
         clearInterval(timer);
       }
     }, 800);
