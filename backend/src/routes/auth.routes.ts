@@ -35,6 +35,8 @@ import {
   getChatContacts,
   checkAvailability,
 
+  verifyPinAndStartWork
+
 } from '../controllers/auth.controller';
 
 const router = express.Router();
@@ -73,6 +75,8 @@ router.get('/payments/helper/pending', getPendingForHelper);
 router.put('/payments/accept/:id', acceptTask);
 router.get('/payments/user/:username', getUserTasks);
 router.get('/payments/helper/:helpername', getHelperTasks);
+router.post('/payments/verify-pin', verifyPinAndStartWork);
+
 
 
 

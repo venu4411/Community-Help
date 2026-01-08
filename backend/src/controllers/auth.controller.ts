@@ -419,7 +419,19 @@ export const getTasksByUser = (req: Request, res: Response) => {
   const { username } = req.params;
 
   const sql = `
-    SELECT *
+    SELECT
+      id,
+      booking_id,
+      username,
+      helpername,
+      calendar,
+      time,
+      location,
+      payment_method,
+      amount,
+      payment_status,
+      task_status,
+      tracking_pin
     FROM payments
     WHERE username = ?
     ORDER BY calendar DESC, time DESC
@@ -434,12 +446,25 @@ export const getTasksByUser = (req: Request, res: Response) => {
   });
 };
 
+
 /* ================= HELPER TASKS ================= */
 export const getTasksByHelper = (req: Request, res: Response) => {
   const { helpername } = req.params;
 
   const sql = `
-    SELECT *
+    SELECT
+      id,
+      booking_id,
+      username,
+      helpername,
+      calendar,
+      time,
+      location,
+      payment_method,
+      amount,
+      payment_status,
+      task_status,
+      tracking_pin
     FROM payments
     WHERE helpername = ?
     ORDER BY calendar DESC, time DESC
@@ -451,6 +476,55 @@ export const getTasksByHelper = (req: Request, res: Response) => {
       return res.status(500).json({ message: 'Failed to load helper tasks' });
     }
     res.json(rows);
+  });
+};
+
+/* ================= VERIFY PIN & START WORK (FIXED) ================= */
+export const verifyPinAndStartWork = (req: Request, res: Response) => {
+  const { taskId, pin } = req.body;
+
+  if (!taskId || !pin) {
+    return res.status(400).json({ message: 'Task ID and PIN required' });
+  }
+
+  // 🔍 Fetch exact task
+  const sqlCheck = `
+    SELECT tracking_pin, task_status
+    FROM payments
+    WHERE id = ?
+  `;
+
+  db.query(sqlCheck, [taskId], (err, rows: any[]) => {
+    if (err || rows.length === 0) {
+      return res.status(400).json({ message: 'Task not found' });
+    }
+
+    const dbPin = String(rows[0].tracking_pin);
+
+    // ❌ PIN mismatch
+    if (dbPin !== String(pin)) {
+      return res.status(401).json({ message: 'Invalid PIN' });
+    }
+
+    // ❌ Already started
+    if (rows[0].task_status === 'work_in_progress') {
+      return res.json({ message: 'Work already started' });
+    }
+
+    // ✅ PIN MATCH → START WORK
+    const sqlUpdate = `
+      UPDATE payments
+      SET task_status = 'work_in_progress'
+      WHERE id = ?
+    `;
+
+    db.query(sqlUpdate, [taskId], (uErr) => {
+      if (uErr) {
+        return res.status(500).json({ message: 'Failed to update status' });
+      }
+
+      res.json({ message: 'PIN verified. Work started.' });
+    });
   });
 };
 
@@ -751,31 +825,39 @@ export const getHelperTasks = (req: Request, res: Response) => {
   });
 };
 
-/* ================= ACCEPT TASK ================= */
+/* ================= ACCEPT TASK (FIXED + PIN) ================= */
 export const acceptTask = (req: Request, res: Response) => {
   const { id } = req.params;
   const { helpername } = req.body;
+
+  // 🔐 generate 4-digit tracking PIN
+  const trackingPin = Math.floor(1000 + Math.random() * 9000);
 
   const sql = `
     UPDATE payments
     SET
       task_status = 'in_progress',
-      helpername = ?
+      helpername = ?,
+      tracking_pin = ?
     WHERE id = ?
-      AND task_status = 'pending'
+      AND task_status IN ('pending', 'accepted')
   `;
 
-  db.query(sql, [helpername, id], (err, result: any) => {
+  db.query(sql, [helpername, trackingPin, id], (err, result: any) => {
     if (err) {
-      console.error('❌ UPDATE ERROR:', err);
-      return res.status(500).json({ message: 'Update failed' });
+      console.error('❌ ACCEPT TASK ERROR:', err);
+      return res.status(500).json({ message: 'Failed to accept task' });
     }
 
     if (result.affectedRows === 0) {
-      return res.status(400).json({ message: 'Task already processed' });
+      return res.status(400).json({
+        message: 'Task already processed or invalid status'
+      });
     }
 
-    res.json({ message: 'Task moved to in_progress' });
+    res.json({
+      message: 'Task accepted and PIN stored'
+    });
   });
 };
 
